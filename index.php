@@ -1,5 +1,7 @@
 <?php
-    require 'views/components/header.php';
-    require 'views/home.php';
-    require 'views/components/footer.php'
+    require 'core/Router.php';
+    //require 'routes.php';
+
+    $uri = trim($_SERVER['REQUEST_URI'], '/');
+    require Router::load('routes.php')->direct($uri);
 ?>
