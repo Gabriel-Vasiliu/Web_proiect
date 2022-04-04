@@ -3,10 +3,10 @@
     $router->define([
         '' => 'controllers/home.php',
         'home' => 'controllers/home.php',
-        'edit-page' => 'controllers/edit-page.php',
+        'edit' => 'controllers/edit-page.php',
         'login' => 'controllers/login.php',
         'register' => 'controllers/register.php',
-        'search-page' => 'controllers/search-page.php',
-        'top-page' => 'controllers/top-page.php',
-        'statistici-personale' => 'controllers/statistici-personale.php'
+        'search' => 'controllers/search-page.php',
+        'top' => 'controllers/top-page.php',
+        'statistici' => 'controllers/statistici-personale.php'
     ]);
