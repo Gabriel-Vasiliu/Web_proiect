@@ -1,9 +1,5 @@
-<?php
-    require 'components/header.php';
-?>
+<?php require 'partials/header.php'; ?>
 
 <h1>Home page.</h1>
 
-<?php
-    require 'components/footer.php';
-?>
+<?php require 'partials/footer.php'; ?>
