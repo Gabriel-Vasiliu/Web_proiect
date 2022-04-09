@@ -2,7 +2,7 @@
     require 'components/header.php';
 ?>
 
-<h1>asdadsasa</h1>
+<h1>Home page.</h1>
 
 <?php
     require 'components/footer.php';
