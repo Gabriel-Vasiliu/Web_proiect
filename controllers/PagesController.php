@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\RegisterModel;
+use Request;
+
 class PagesController
 {
     public function home()
@@ -16,7 +19,21 @@ class PagesController
 
     public function register()
     {
-        return view('register');
+        $errors = [];
+        $registerModel = new RegisterModel();
+        if(Request::method()=='POST'){
+            $registerModel->loadData(Request::getBody());
+            if($registerModel->validate() && $registerModel->register()){
+                return 'Success';
+            }
+
+            return view('register', [
+                'model' => $registerModel
+            ]);
+        }
+        return view('register', [
+            'model' => $registerModel
+        ]);
     }
 
     public function edit()
