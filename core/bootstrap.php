@@ -2,8 +2,9 @@
 
 use App\Core;
 
-function view($name)
+function view($name, $data = [])
 {
+    extract($data);
     return require "views/{$name}.view.php";
 }
 
