@@ -11,4 +11,12 @@ class Request
     {
         return $_SERVER['REQUEST_METHOD'];
     }
+
+    public static function getBody(){
+        $data = [];
+        foreach($_POST as $key => $value){
+            $data[$key] = $value;
+        }
+        return $data;
+    }
 }
