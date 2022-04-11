@@ -7,14 +7,17 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Controllers\\PagesController' => $baseDir . '/controllers/PagesController.php',
+    'App\\Core\\App' => $baseDir . '/core/App.php',
     'App\\Core\\Form\\Field' => $baseDir . '/core/form/Field.php',
     'App\\Core\\Form\\Form' => $baseDir . '/core/form/Form.php',
+    'App\\Core\\Request' => $baseDir . '/core/Request.php',
+    'App\\Core\\Router' => $baseDir . '/core/Router.php',
     'App\\Models\\RegisterModel' => $baseDir . '/models/RegisterModel.php',
     'ComposerAutoloaderInit44477b20ec3df84e3a80c82ae091ff47' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Composer\\Autoload\\ComposerStaticInit44477b20ec3df84e3a80c82ae091ff47' => $vendorDir . '/composer/autoload_static.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Connection' => $baseDir . '/core/database/Connection.php',
     'Model' => $baseDir . '/models/Model.php',
-    'Request' => $baseDir . '/core/Request.php',
-    'Router' => $baseDir . '/core/Router.php',
+    'QueryBuilder' => $baseDir . '/core/database/QueryBuilder.php',
 );

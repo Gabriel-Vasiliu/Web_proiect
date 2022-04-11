@@ -8,16 +8,19 @@ class ComposerStaticInit44477b20ec3df84e3a80c82ae091ff47
 {
     public static $classMap = array (
         'App\\Controllers\\PagesController' => __DIR__ . '/../..' . '/controllers/PagesController.php',
+        'App\\Core\\App' => __DIR__ . '/../..' . '/core/App.php',
         'App\\Core\\Form\\Field' => __DIR__ . '/../..' . '/core/form/Field.php',
         'App\\Core\\Form\\Form' => __DIR__ . '/../..' . '/core/form/Form.php',
+        'App\\Core\\Request' => __DIR__ . '/../..' . '/core/Request.php',
+        'App\\Core\\Router' => __DIR__ . '/../..' . '/core/Router.php',
         'App\\Models\\RegisterModel' => __DIR__ . '/../..' . '/models/RegisterModel.php',
         'ComposerAutoloaderInit44477b20ec3df84e3a80c82ae091ff47' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Composer\\Autoload\\ComposerStaticInit44477b20ec3df84e3a80c82ae091ff47' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Connection' => __DIR__ . '/../..' . '/core/database/Connection.php',
         'Model' => __DIR__ . '/../..' . '/models/Model.php',
-        'Request' => __DIR__ . '/../..' . '/core/Request.php',
-        'Router' => __DIR__ . '/../..' . '/core/Router.php',
+        'QueryBuilder' => __DIR__ . '/../..' . '/core/database/QueryBuilder.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
