@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 class Router
 {
     protected $routes = [
@@ -40,7 +42,7 @@ class Router
                 return $this->callAction($data);
             }
         }
-        throw new Exception('Nu este nicio ruta definita pentru acest URI!');
+        throw new \Exception('Nu este nicio ruta definita pentru acest URI!');
     }
 
     protected function callAction($data)
@@ -50,7 +52,7 @@ class Router
         $controller = new $controller;
         
         if (!method_exists($controller, $action)) {
-            throw new Exception(
+            throw new \Exception(
                 "{$controller} does not respond to the action {$action} action"
             );
         }
