@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Models\RegisterModel;
-use Request;
+use App\Core\Request;
 
 class PagesController
 {
