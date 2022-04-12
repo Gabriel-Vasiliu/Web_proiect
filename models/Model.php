@@ -1,12 +1,14 @@
 <?php
 
+use App\Core\App;
+
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
     public const RULE_MATCH = 'match';
-
+    public const RULE_UNIQUE = 'unique';
 
     public function loadData($data){
         foreach($data as $key => $value){
@@ -17,6 +19,16 @@ abstract class Model
     }
 
     abstract public function rules(): array;
+
+    public function labels(): array
+    {
+        return [];
+    }
+
+    public function getLabel($attribute)
+    {
+        return $this->labels()[$attribute] ?? $attribute;
+    }
 
     public array $errors = [];
 
@@ -38,7 +50,20 @@ abstract class Model
                     $this->addError($attribute, SELF::RULE_MAX, $rule);
                 }
                 if($ruleName === SELF::RULE_MATCH && $value !== $this->{$rule['match']}){
+                    $rule['match'] = $this->getLabel($rule['match']);
                     $this->addError($attribute, SELF::RULE_MATCH, $rule);
+                }
+                if($ruleName === SELF::RULE_UNIQUE) {
+                    $className = $rule['class'];
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $tableName = $className::tableName();
+                    $pdo = App::get('database')->getPdo();
+                    $statement = $pdo->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = {$this->{$uniqueAttr}}");
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+                    if($record){
+                        $this->addError($attribute, SELF::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                    }
                 }
             }
         }
@@ -60,7 +85,8 @@ abstract class Model
             SELF::RULE_REQUIRED => 'This field is required',
             SELF::RULE_MIN => 'Min length of this field must be {min}',
             SELF::RULE_MAX => 'Max length of this field must be {max}',
-            SELF::RULE_MATCH => 'This field must be the same as {match}'
+            SELF::RULE_MATCH => 'This field must be the same as {match}',
+            SELF::RULE_UNIQUE => 'Record with this {field} already exists'
         ];
     }
 

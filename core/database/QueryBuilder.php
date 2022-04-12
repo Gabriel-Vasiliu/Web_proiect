@@ -14,4 +14,19 @@ class QueryBuilder {
 
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public function executeStatementSQL($sql){
+        try{
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        } catch(PDOException $e){
+            var_dump($sql);
+            var_dump($e->getMessage());
+        }
+       // var_dump($statement);
+    }
+
+    public function getPdo(){
+        return $this->pdo;
+    }
 }

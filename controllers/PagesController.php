@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\RegisterModel;
-use App\Core\Request;
+use App\Models\User;
+use App\Core\{Request, App};
 
 class PagesController
 {
@@ -19,19 +19,20 @@ class PagesController
     public function register()
     {
         $errors = [];
-        $registerModel = new RegisterModel();
+        $user = new User();
         if(Request::method()=='POST'){
-            $registerModel->loadData(Request::getBody());
-            if($registerModel->validate() && $registerModel->register()){
-                return 'Success';
+            $user->loadData(Request::getBody());
+            if($user->validate() && $user->save()){
+                App::get('session')->setFlash('success', 'Thanks for registering');
+                redirect('home');
+                exit;
             }
-
             return view('register', [
-                'model' => $registerModel
+                'model' => $user
             ]);
         }
         return view('register', [
-            'model' => $registerModel
+            'model' => $user
         ]);
     }
 
