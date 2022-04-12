@@ -23,6 +23,7 @@ class PagesController
         if(Request::method()=='POST'){
             $user->loadData(Request::getBody());
             if($user->validate() && $user->save()){
+                //var_dump("in PagesController->register()");
                 App::get('session')->setFlash('success', 'Thanks for registering');
                 redirect('home');
                 exit;

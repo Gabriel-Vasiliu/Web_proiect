@@ -58,7 +58,8 @@ abstract class Model
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableName = $className::tableName();
                     $pdo = App::get('database')->getPdo();
-                    $statement = $pdo->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = {$this->{$uniqueAttr}}");
+                    $statement = $pdo->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = '{$this->{$uniqueAttr}}'");
+                    //var_dump($statement);
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if($record){
@@ -67,7 +68,6 @@ abstract class Model
                 }
             }
         }
-
         return empty($this->errors);
     }
 

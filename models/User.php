@@ -19,6 +19,7 @@ class User extends DBModel
     }
 
     public function save(){
+        //var_dump("in save");
         $this->status = SELF::STATUS_INACTIVE;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         return parent::save();
