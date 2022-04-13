@@ -17,10 +17,19 @@
       <label class="logo"></label>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
                 <li><a href="/top">Top</a></li>
                 <li><a href="/search">Search</a></li>
+                
+                <?php if (App\Core\App::isGuest()): ?>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+                <?php else: ?>
+                <li>
+                  <a href="/logout">Welcome, <?php echo App\Core\App::$user->getDisplayName(); ?>
+                    (Logout)
+                  </a>
+                </li>
+                <?php endif; ?>
             </ul>
         </nav>
         
