@@ -10,5 +10,7 @@ $router->get('register', 'PagesController@register');
 $router->get('search', 'PagesController@search');
 $router->get('top', 'PagesController@top');
 $router->get('statistics', 'PagesController@statistics');
+$router->get('logout', 'PagesController@logout');
 
 $router->post('register', 'PagesController@register'); 
+$router->post('login', 'PagesController@login');
