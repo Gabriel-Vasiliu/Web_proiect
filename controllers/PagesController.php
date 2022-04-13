@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 use App\Models\User;
-use App\Core\{Request, App};
+use App\Models\LoginForm;
+use App\Core\Request;
+use App\Core\App;
 
 class PagesController
 {
@@ -13,7 +15,18 @@ class PagesController
 
     public function login()
     {
-        return view('login');
+        $loginForm = new LoginForm();
+        if(Request::method()=='POST'){
+            $loginForm->loadData(Request::getBody());
+            if($loginForm->validate() && $loginForm->login()){
+                redirect('/');
+                //App::login();
+                return;
+            }
+        }
+        return view('login', [
+            'model' => $loginForm
+        ]);
     } 
 
     public function register()
@@ -23,7 +36,6 @@ class PagesController
         if(Request::method()=='POST'){
             $user->loadData(Request::getBody());
             if($user->validate() && $user->save()){
-                //var_dump("in PagesController->register()");
                 App::get('session')->setFlash('success', 'Thanks for registering');
                 redirect('home');
                 exit;
@@ -35,6 +47,12 @@ class PagesController
         return view('register', [
             'model' => $user
         ]);
+    }
+
+    public function logout()
+    {
+        App::logout();
+        redirect('');
     }
 
     public function edit()
