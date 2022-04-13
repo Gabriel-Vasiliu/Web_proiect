@@ -1,28 +1,32 @@
 <?php
 
 namespace App\Models;
-use DBModel;
-
+use App\Core\UserModel;
+use App\Models\DBModel;
 class User extends DBModel
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 2;
-
     public string $username = '';
     public int $status = SELF::STATUS_INACTIVE;
     public string $password = '';
-    public string $confirmPassword = '';    
+    public string $confirmPassword = '';
     public function tableName(): string
     {
         return 'users';
     }
 
+    public static function primaryKey(): string
+    {
+        return 'id';
+    }
+
     public function save(){
-        //var_dump("in save");
         $this->status = SELF::STATUS_INACTIVE;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        return parent::save();
+        parent::save();
+        
     }
 
     public function rules(): array
@@ -46,5 +50,10 @@ class User extends DBModel
             'password' => 'Password',
             'confirmPassword' => 'Confirm Password'
         ];
+    }
+
+    public function getDisplayName(): string
+    {
+        return $this->username;
     }
 }

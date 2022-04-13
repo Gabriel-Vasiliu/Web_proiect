@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Models;
 use App\Core\App;
 
 abstract class Model
@@ -41,17 +41,17 @@ abstract class Model
                     $ruleName = $rule[0];
                 }
                 if($ruleName === SELF::RULE_REQUIRED && !$value){
-                    $this->addError($attribute, SELF::RULE_REQUIRED);
+                    $this->addErrorForRule($attribute, SELF::RULE_REQUIRED);
                 }
                 if($ruleName === SELF::RULE_MIN && strlen($value) < $rule['min']){
-                    $this->addError($attribute, SELF::RULE_MIN, $rule);
+                    $this->addErrorForRule($attribute, SELF::RULE_MIN, $rule);
                 }
                 if($ruleName === SELF::RULE_MAX && strlen($value) > $rule['max']){
-                    $this->addError($attribute, SELF::RULE_MAX, $rule);
+                    $this->addErrorForRule($attribute, SELF::RULE_MAX, $rule);
                 }
                 if($ruleName === SELF::RULE_MATCH && $value !== $this->{$rule['match']}){
                     $rule['match'] = $this->getLabel($rule['match']);
-                    $this->addError($attribute, SELF::RULE_MATCH, $rule);
+                    $this->addErrorForRule($attribute, SELF::RULE_MATCH, $rule);
                 }
                 if($ruleName === SELF::RULE_UNIQUE) {
                     $className = $rule['class'];
@@ -63,7 +63,7 @@ abstract class Model
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if($record){
-                        $this->addError($attribute, SELF::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                        $this->addErrorForRule($attribute, SELF::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
             }
@@ -71,12 +71,17 @@ abstract class Model
         return empty($this->errors);
     }
 
-    public function addError(string $attribute, string $rule, $params = [])
+    private function addErrorForRule(string $attribute, string $rule, $params = [])
     {
         $message = $this->errorMessages()[$rule] ?? '';
         foreach($params as $key => $value){
             $message = str_replace("{{$key}}", $value, $message);
         }
+        $this->errors[$attribute][] = $message;
+    }
+
+    public function addError(string $attribute, string $message)
+    {
         $this->errors[$attribute][] = $message;
     }
 
