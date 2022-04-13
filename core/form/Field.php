@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Core\Form;
-use Model;
+use App\Models\Model;
 
 class Field
 {
