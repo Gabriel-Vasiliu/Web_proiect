@@ -1,5 +1,4 @@
 <?php require 'partials/header.php'; ?>
-
 <h1>Home page.</h1>
 
 <?php if(App\Core\App::get('session')->getFlash('success')): ?>
