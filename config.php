@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'userClass' => \App\Models\User::class,
     'database' => [
         'name' => 'phpdb',
         'port' => '3308',
