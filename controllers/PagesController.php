@@ -52,7 +52,7 @@ class PagesController
     public function logout()
     {
         App::logout();
-        redirect('');
+        redirect('/');
     }
 
     public function edit()
