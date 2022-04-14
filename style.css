@@ -15,7 +15,8 @@ body {
 
 header {
   padding: 1rem;
-  display: flex;
+  /*display: flex;*/
+  text-align: right;
   justify-content: space-around;
 }
 
