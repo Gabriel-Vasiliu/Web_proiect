@@ -37,7 +37,7 @@ class PagesController
             $user->loadData(Request::getBody());
             if($user->validate() && $user->save()){
                 App::get('session')->setFlash('success', 'Thanks for registering');
-                redirect('home');
+                redirect('/');
                 exit;
             }
             return view('register', [

@@ -25,8 +25,7 @@ class User extends DBModel
     public function save(){
         $this->status = SELF::STATUS_INACTIVE;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        parent::save();
-        
+        return parent::save();
     }
 
     public function rules(): array
