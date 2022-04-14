@@ -108,6 +108,38 @@
     margin-top: 50px;
     font-size: 1.5em;
   }
+
+  .btn{
+    background-image: linear-gradient(to top left, #00bfff, #4000ff);
+    border-radius: 10px;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 30px;
+  }
+
+  .btn:hover{
+    background-image: linear-gradient(to top left, #4000ff, #00bfff);
+  }
+
+  input{
+    padding: 12px 20px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    display: inline-block;
+    border: 1px solid #0080ff;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  label{
+    margin-left: 30px;
+    color: #0080ff;
+    font-size: 1.5em;
+  }
   
   footer {
     position:absolute;
