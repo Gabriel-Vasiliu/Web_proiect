@@ -7,6 +7,8 @@
   }
   body{
     font-family: montserrat;
+    background: #DDDDDD;
+    
   }
   nav{
     background: #0082e6;
@@ -90,6 +92,21 @@
     #check:checked ~ ul{
       left: 0;
     }
+  }
+
+  .home-gif{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50vw;
+    height: 50vh;
+  }
+
+  .descriere{
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+    font-size: 1.5em;
   }
   
   footer {
