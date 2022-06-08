@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\LoginForm;
 use App\Core\Request;
 use App\Core\App;
+use App\Models\Bottle;
 
 class PagesController
 {
@@ -72,6 +73,31 @@ class PagesController
 
     public function top()
     {
-        return view('top');
+        $bottles = App::get('database')->selectAllData('bottles');
+        return view('top', [
+            'bottles' => $bottles
+        ]);
+    }
+
+    public function manage()
+    {
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
+    }
+
+    public function add()
+    {
+        $bottle = new Bottle();
+        if(Request::method()=='POST'){
+            $bottle->loadData(Request::getBody());
+            if($bottle->validate() && $bottle->save()){
+                App::get('session')->setFlash('success', 'Thanks for registering');
+                redirect('/');
+                exit;
+            }
+        }
+        return view('add');
     }
 }

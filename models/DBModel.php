@@ -14,6 +14,7 @@ abstract class DBModel extends Model
         $attributes = $this->attributes();
         $params = array_map(fn($attr) => "'{$this->{$attr}}'", $attributes);
         $sql = "INSERT INTO $tableName(".implode(',' , $attributes).") VALUES(".implode(', ',$params).");";
+        //die(var_dump($sql));
         //var_dump($sql);
         App::get('database')->executeStatementSQL($sql);
         return true;

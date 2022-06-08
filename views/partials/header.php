@@ -16,17 +16,18 @@
         <input id="nav-menu-toggle" type="checkbox">
             <ul>
                 <li><a class="nav-link" href="/">Home</a></li>
-                <li><a class="nav-link" href="/top">Top</a></li>
-                <li><a class="nav-link" href="/search">Search</a></li>
+                <li><a class="nav-link" href="/bottles/top">Top</a></li>
+                <li><a class="nav-link" href="/bottles/search">Search</a></li>
                 
                 <?php if (App\Core\App::isGuest()): ?>
                 <li><a class="nav-link" href="/login">Login</a></li>
                 <li><a class="nav-link" href="/register">Register</a></li>
                 <?php else: ?>
-                <li>
-                  <a href="/logout">Welcome, <?php echo App\Core\App::$user->getDisplayName(); ?>
+                <li><a class="nav-link" href="/bottles/manage">Manage</a></li>
+                <li><a class="nav-link" href="/bottles/add">Add</a></li>
+                  <li><a href="/logout">Welcome, <?php echo App\Core\App::$user->getDisplayName(); ?>
                     (Logout)
-                  </a>
+                  </a><li>
                 </li>
                 <?php endif; ?>
             </ul>

@@ -4,4 +4,12 @@ Sa se dezvolte o aplicatie Web destinata colectionarilor de recipiente (sticle, 
 
 # Documentation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+- [Specification](https://Gabriel-Vasiliu.github.io/Web_proiect)
+=======
+- [Specification](https://Gabriel-Vasiliu.github.io/Web_proiect)
+>>>>>>> 14be92c9deb37f3b67daf97c0d724b935c6a8080
+=======
 - [Specification](https://github.com/Gabriel-Vasiliu/Web_proiect/blob/main/Scholarly.html)
+>>>>>>> 327012241a127cd82712d40032298ab06926a1ae

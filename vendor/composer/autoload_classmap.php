@@ -13,6 +13,7 @@ return array(
     'App\\Core\\Request' => $baseDir . '/core/Request.php',
     'App\\Core\\Router' => $baseDir . '/core/Router.php',
     'App\\Core\\Session' => $baseDir . '/core/Session.php',
+    'App\\Models\\Bottle' => $baseDir . '/models/Bottle.php',
     'App\\Models\\DBModel' => $baseDir . '/models/DBModel.php',
     'App\\Models\\LoginForm' => $baseDir . '/models/LoginForm.php',
     'App\\Models\\Model' => $baseDir . '/models/Model.php',
