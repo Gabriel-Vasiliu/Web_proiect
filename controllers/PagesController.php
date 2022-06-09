@@ -61,9 +61,21 @@ class PagesController
         return view('edit');
     }
 
-    public function search()
+    public function search($queryParams)
     {
-        return view('search');
+        if(!empty($queryParams)){
+            $bottles = App::get('database')->selectBottlesFilteredData('bottles',123,123,123);
+            $queryParams = json_encode($queryParams);
+            return json_encode($bottles);
+        }else {
+            //$bottles = App::get('database')->selectAllData('bottles');
+            //die(var_dump($bottles));
+            $bottles = App::get('database')->selectAllData('bottles');
+            return view('search', [
+                'bottles' => $bottles,
+                'queryParams' => $queryParams
+            ]);
+        }
     }
 
     public function statistics()

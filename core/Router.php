@@ -39,15 +39,18 @@ class Router
             } else {
                 $data = explode('@', $this->routes[$requestType][$uri]);
                 $data[0] = "App\\Controllers\\{$data[0]}";
+                $data[2] = Request::queryParams();
                 return $this->callAction($data);
             }
         }
+        // die(var_dump($uri));
+        // die(var_dump($this->routes[$requestType]));
         throw new \Exception('Nu este nicio ruta definita pentru acest URI!');
     }
 
     protected function callAction($data)
     {
-        [$controller, $action] = $data;
+        [$controller, $action, $queryParams] = $data;
         
         $controller = new $controller;
         
@@ -57,6 +60,6 @@ class Router
             );
         }
 
-        return $controller->$action();
+        return $controller->$action($queryParams);
     }
 }
