@@ -10,10 +10,9 @@ $router->get('register', 'PagesController@register');
 $router->get('bottles/search', 'PagesController@search');
 $router->get('bottles/top', 'PagesController@top');
 $router->get('bottles/manage', 'PagesController@manage');
-$router->get('bottles/add', 'PagesController@add');
 $router->get('statistics', 'PagesController@statistics');
 $router->get('logout', 'PagesController@logout');
 
 $router->post('register', 'PagesController@register'); 
 $router->post('login', 'PagesController@login');
-$router->post('bottles/add', 'PagesController@add');
+$router->post('bottles/manage', 'PagesController@manage');
