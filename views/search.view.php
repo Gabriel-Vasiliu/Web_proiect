@@ -51,11 +51,9 @@
             if(this.readyState === 4 && this.status === 200)
             {
                 var data = JSON.parse(this.response)
-                console.log(data);
-                console.log("Data len:" + data.length);
                 document.getElementById("qp").innerHTML = this.response
                 if(data.length == 0){
-                    document.getElementById("myp").innerHTML = 'No data here...';
+                    document.getElementById("content").innerHTML = 'No data here...';
                 } else {
                     table = '<table>'
                     table = table + "<thead>"
@@ -84,7 +82,7 @@
                 document.getElementById("myp").innerHTML = 'No data here...';
             }
         }
-        xhttp.open("GET", `/bottles/search?type="+type+"&value="+value+"&country="+${country}`);
+        xhttp.open("GET", `/bottles/search?type=${type}&value=${value}&country=${country}`);
         xhttp.send();
     })
 </script>

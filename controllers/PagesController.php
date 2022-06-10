@@ -64,13 +64,15 @@ class PagesController
     public function search($queryParams)
     {
         if(!empty($queryParams)){
-            $bottles = App::get('database')->selectBottlesFilteredData('bottles',123,123,123);
+            $bottles = App::get('database')->selectBottlesFilteredData('bottles',$queryParams['type'],$queryParams['value'],$queryParams['country'], $queryParams);
             $queryParams = json_encode($queryParams);
+            //die(var_dump($bottles));       
             return json_encode($bottles);
         }else {
             //$bottles = App::get('database')->selectAllData('bottles');
             //die(var_dump($bottles));
             $bottles = App::get('database')->selectAllData('bottles');
+            
             return view('search', [
                 'bottles' => $bottles,
                 'queryParams' => $queryParams

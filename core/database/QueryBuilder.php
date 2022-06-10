@@ -15,15 +15,15 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function selectBottlesFilteredData($table, $type = '', $value = '', $country = ''){
+    public function selectBottlesFilteredData($table, $type = '', $value = '', $country = '', $params = []){
         $optionsArr = [];
-        if($type != ''){
+        if($type != '' && $type != "%27%27"){
             $optionsArr['type'] = $type;
         }
-        if($value != ''){
+        if($value != '' && $value != "%27%27"){
             $optionsArr['value'] = $value;
         }
-        if($country != ''){
+        if($country != '' && $country != "%27%27"){
             $optionsArr['country'] = $country;
         }
         $sql = '';
@@ -41,13 +41,25 @@ class QueryBuilder {
                 }
             }
             $sql .= ';';
+            
         }
+        //die(var_dump($sql));
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         $rows = $statement->fetchAll(PDO::FETCH_OBJ);
         return $rows;
     }
-
+    protected function existsValues($params){
+        if(empty($params)){
+            return false;
+        }
+        foreach($params as $key => $value){
+            if($value != ''){
+                return true;
+            }
+        }
+        return false;
+    }
     public function selectUserBottles($username, $bottlesTable, $userBottlesTable, $usersTable) {
         $sql = "SELECT * FROM {$userBottlesTable} WHERE user_id=(SELECT id FROM $usersTable WHERE username='{$username}');";
         $statement = $this->pdo->prepare($sql);
