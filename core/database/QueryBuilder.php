@@ -1,5 +1,7 @@
 <?php
 
+use App\Core\App;
+
 class QueryBuilder {
     protected $pdo;
 
@@ -13,6 +15,29 @@ class QueryBuilder {
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    protected function getUserIdByUsername(){
+        $username = App::$user->username;
+        $sql = "SELECT id FROM users WHERE username='{$username}'";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    protected function getBottleId(){
+        $sql = "SELECT max(id) as id from bottles";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function insertBottleInUserBottlesTable(){
+        $userId = $this->getUserIdByUsername()[0]->id;
+        $bottleId = $this->getBottleId()[0]->id;
+        $sql = "INSERT INTO user_bottles VALUES({$userId},{$bottleId})";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
     }
 
     public function selectBottlesFilteredData($table, $type = '', $value = '', $country = '', $params = []){
