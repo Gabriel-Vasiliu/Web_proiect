@@ -104,6 +104,7 @@ class QueryBuilder {
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         $rows = $statement->fetchAll(PDO::FETCH_OBJ);
+        //die(var_dump($rows));
         return $rows;
     }
 

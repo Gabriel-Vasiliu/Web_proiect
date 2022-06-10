@@ -93,16 +93,17 @@ class PagesController
         ]);
     }
 
-    public function manage()
-    {
+    public function manage($queryParams)
+    {        
         $bottle = new Bottle();
-        if(Request::method()=='POST'){
-            $bottle->loadData(Request::getBody());
+        if(!empty($queryParams)){
+            $bottle->loadData($queryParams);
+            //die(var_dump($bottle->image));
             if($bottle->validate() && $bottle->save()){
                 App::get('database')->insertBottleInUserBottlesTable();
-                App::get('session')->setFlash('success', 'Thanks for registering');
-                redirect('/');
-                exit;
+                $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+                //App::get('session')->setFlash('success', 'Thanks for registering');
+                return json_encode($userBottles);
             }
         }
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
