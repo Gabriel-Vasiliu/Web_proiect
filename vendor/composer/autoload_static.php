@@ -14,6 +14,7 @@ class ComposerStaticInit44477b20ec3df84e3a80c82ae091ff47
         'App\\Core\\Request' => __DIR__ . '/../..' . '/core/Request.php',
         'App\\Core\\Router' => __DIR__ . '/../..' . '/core/Router.php',
         'App\\Core\\Session' => __DIR__ . '/../..' . '/core/Session.php',
+        'App\\Core\\UserModel' => __DIR__ . '/../..' . '/core/UserModel.php',
         'App\\Models\\Bottle' => __DIR__ . '/../..' . '/models/Bottle.php',
         'App\\Models\\DBModel' => __DIR__ . '/../..' . '/models/DBModel.php',
         'App\\Models\\LoginForm' => __DIR__ . '/../..' . '/models/LoginForm.php',
