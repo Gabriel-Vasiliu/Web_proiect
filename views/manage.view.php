@@ -1,6 +1,20 @@
 <?php require 'partials/header.php'; ?>
 
 <h1> Manage page. </h1>
+
+<h2>Add bottle:</h2>
+<form method="POST" action="">
+    <label>Type:</label>
+    <input type="text" name="type">
+    <label>image:</label>
+    <input type="text" name="image">
+    <label>Value:</label>
+    <input type="text" name="value">
+    <label>Country:</label>
+    <input type="text" name="country">
+    <input type="submit" value="Add">
+</form>
+
 <h2>My bottles:</h2>
 
 <?php if (!empty($userBottles)) : ?>

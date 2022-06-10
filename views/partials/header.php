@@ -24,7 +24,6 @@
                 <li><a class="nav-link" href="/register">Register</a></li>
                 <?php else: ?>
                 <li><a class="nav-link" href="/bottles/manage">Manage</a></li>
-                <li><a class="nav-link" href="/bottles/add">Add</a></li>
                   <li><a href="/logout">Welcome, <?php echo App\Core\App::$user->getDisplayName(); ?>
                     (Logout)
                   </a><li>
