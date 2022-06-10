@@ -32,7 +32,7 @@ class Request
         {
             $tmp = explode('=', $value);
             $queryParams[$tmp[0]] = $tmp[1];
-        } 
+        }   
         return $queryParams;
     }
 
