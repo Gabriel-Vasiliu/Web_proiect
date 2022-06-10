@@ -60,6 +60,10 @@
                     let first = true;
                     table = table + "<tr>"
                     for(let key in data[0]){
+                        if(key == 'id'){
+                            continue
+                        }
+                        key = key.charAt(0).toUpperCase() + key.slice(1);
                         table = table + `<th> ${key} </th>`
                     }
                     table = table + "</tr>"
@@ -68,6 +72,9 @@
                     for(let rowIndex in data){
                             table = table + "<tr>"
                             for(let key in data[rowIndex]){
+                                if(key == 'id'){
+                                    continue
+                                }
                                 table = table + `<td> ${data[rowIndex][key]} </td>`
                             }
                             table = table + "</tr>"
