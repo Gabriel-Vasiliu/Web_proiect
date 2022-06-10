@@ -95,23 +95,20 @@ class PagesController
 
     public function manage()
     {
-        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
-        return view('manage', [
-            'userBottles' => $userBottles
-        ]);
-    }
-
-    public function add()
-    {
         $bottle = new Bottle();
         if(Request::method()=='POST'){
             $bottle->loadData(Request::getBody());
             if($bottle->validate() && $bottle->save()){
+                App::get('database')->insertBottleInUserBottlesTable();
                 App::get('session')->setFlash('success', 'Thanks for registering');
                 redirect('/');
                 exit;
             }
         }
-        return view('add');
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
     }
 }
