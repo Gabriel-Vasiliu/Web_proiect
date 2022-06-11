@@ -82,7 +82,35 @@ class PagesController
 
     public function statistics()
     {
-        return view('statistics');
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        $types = array();
+        $bestBottle = new Bottle();
+        $maxValue = 0;
+        foreach($userBottles as $bottle){
+            if($bottle->value > $maxValue){
+                $maxValue = $bottle->value;
+                $bestBottle->type = $bottle->type;
+                $bestBottle->image = $bottle->image;
+                $bestBottle->value = $bottle->value;
+                $bestBottle->country = $bottle->country;
+            }
+            $ok = 1;
+            foreach($types as $type=>$t){
+                if($type == $bottle->type){
+                    $ok=0;
+                    $types[$type] = $t + 1;
+                }
+            }
+            if($ok == 1){
+                $types[$bottle->type] = 1;
+            }
+        }
+        return view('statistics', [
+            'bottles' => $userBottles,
+            'bestBottle' => $bestBottle,
+            'types' => $types,
+            'nrBottles' => sizeof($userBottles)
+        ]);
     }
 
     public function top()
