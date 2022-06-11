@@ -1,8 +1,5 @@
 <?php require 'partials/header.php'; ?>
 
-<h1> Top page. </h1>
-<h2>All Bottles:</h2>
-
 <?php if (!empty($bottles)) : ?>
     <table id="table">
         <thead>

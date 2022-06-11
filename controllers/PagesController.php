@@ -105,6 +105,7 @@ class PagesController
                 $types[$bottle->type] = 1;
             }
         }
+        arsort($types);
         return view('statistics', [
             'bottles' => $userBottles,
             'bestBottle' => $bestBottle,
@@ -115,7 +116,7 @@ class PagesController
 
     public function top()
     {
-        $bottles = App::get('database')->selectAllData('bottles');
+        $bottles = App::get('database')->selectMostValuableBottles('bottles');
         return view('top', [
             'bottles' => $bottles
         ]);

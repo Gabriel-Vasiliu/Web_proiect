@@ -2,6 +2,7 @@
 
 <h2> The most expensive bottle: </h2>
 
+<?php if ($bestBottle->type != '') : ?>
 <table>
     <thead>
         <tr>
@@ -20,6 +21,9 @@
         </tr>       
     </tbody>
 </table>
+<?php else: ?>
+    <p>No data here...</p>
+<?php endif; ?>
 
 <h2> Number of bottles: <?= $nrBottles ?></h2>
 

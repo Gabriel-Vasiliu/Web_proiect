@@ -108,6 +108,14 @@ class QueryBuilder {
         return $rows;
     }
 
+    public function selectMostValuableBottles($bottlesTable){
+        $sql = "SELECT * FROM {$bottlesTable} ORDER BY value DESC LIMIT 10;";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        $rows = $statement->fetchAll(PDO::FETCH_OBJ);
+        return $rows;
+    }
+
     public function executeStatementSQL($sql){
         try{
         $statement = $this->pdo->prepare($sql);
