@@ -8,6 +8,7 @@
                 <th>Image</th>
                 <th>Value</th>
                 <th>Country</th>
+                <th>User</th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                 <td><?= $bottle->image ?></td>
                 <td><?= $bottle->value?></td>
                 <td><?= $bottle->country ?></td>
+                <td><?= $bottle->username ?></td>
             </tr>
            
             <?php endforeach ?>
@@ -67,6 +69,9 @@ function generate() {
                 cellWidth: 100,
             },
             3: {
+                cellWidth: 100,
+            },
+            4: {
                 cellWidth: 100,
             }
         },

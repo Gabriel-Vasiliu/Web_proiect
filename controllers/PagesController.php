@@ -116,7 +116,7 @@ class PagesController
 
     public function top()
     {
-        $bottles = App::get('database')->selectMostValuableBottles('bottles');
+        $bottles = App::get('database')->selectMostValuableBottles('bottles', 'user_bottles', 'users');
         return view('top', [
             'bottles' => $bottles
         ]);

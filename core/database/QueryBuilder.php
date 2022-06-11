@@ -107,9 +107,10 @@ class QueryBuilder {
         //die(var_dump($rows));
         return $rows;
     }
-
-    public function selectMostValuableBottles($bottlesTable){
-        $sql = "SELECT * FROM {$bottlesTable} ORDER BY value DESC LIMIT 10;";
+// select b.type, b.image, b.value, b.country, u.username from bottles b, users u, user_bottles ub 
+// where b.id = ub.bottle_id and ub.user_id = u.id order by value desc limit 10;
+    public function selectMostValuableBottles($bottlesTable, $userBottlesTable, $usersTable){
+        $sql = "SELECT b.type, b.image, b.value, b.country, u.username FROM {$bottlesTable} b, {$usersTable} u, {$userBottlesTable} ub WHERE b.id = ub.bottle_id and ub.user_id = u.id ORDER BY value DESC LIMIT 10;";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         $rows = $statement->fetchAll(PDO::FETCH_OBJ);
