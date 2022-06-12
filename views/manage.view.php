@@ -9,7 +9,7 @@
     <label>Image</label>
     <input type="text" name="image" id="_image">
     <label>Value</label>
-    <input type="text" name="value" id="_value">
+    <input type="number" name="value" id="_value" min="0">
     <label>Country</label>
     <input type="text" name="country" id="_country">
     <input type="button" value="Add" id="add-button">
@@ -30,17 +30,20 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($userBottles as $bottle): ?>
-                <tr>
-                    <td><?= $bottle->id ?></td>
+                <?php foreach($userBottles as $index => $bottle): ?>
+                <tr id="<?= $index; ?>">
+                    <td> 
+                        <span><?= $bottle->id ?></span>
+                        <input type="text" style="display: none;">
+                    </td>
                     <td><?= $bottle->type ?></td>
                     <td><?= $bottle->image ?></td>
                     <td><?= $bottle->value?></td>
                     <td><?= $bottle->country ?></td>
                     <td>
                         <div class="options-update-delete">
-                            <button class="option-update">Update</button>
-                            <button class="option-delete">Delete</button>
+                            <button class="option-update update-button" data-id="<?= $index ?>">Update</button>
+                            <button class="option-delete delete-button" data-id="<?= $index ?>">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -54,18 +57,19 @@
     <?php endif; ?>
 </div>
 <script>
+    var data = JSON.parse('<?= json_encode($userBottles)?>')
+    //const arr
     document.getElementById('add-button').addEventListener('click', function() {
+        data = JSON.parse('<?= json_encode($userBottles)?>')
         var type = document.getElementById('_type').value
         var value = document.getElementById('_value').value
         var image = document.getElementById('_image').value
         var country = document.getElementById('_country').value
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function(response) {
-            //console.log(this)
             if(this.readyState === 4 && this.status === 200)
             {
-                console.log(this.response);
-                var data = JSON.parse(this.response)
+                data = JSON.parse(this.response)
                 //document.getElementById("qp").innerHTML = this.response
                 if(data.length == 0){
                     document.getElementById("content").innerHTML = 'No data here...';
@@ -85,33 +89,143 @@
                     table = table + "</tr>"
                     table = table + "</thead>"
                     table = table + "<tbody>"
+                    let idRow = -1
                     for(let rowIndex in data){
-                            table = table + "<tr>"
+                            table = table + "<tr >"
                             for(let key in data[rowIndex]){
-                                // if(key == 'id'){
-                                //     continue
-                                // }
+                                if(key == 'id'){
+                                    idRow = data[rowIndex][key];
+                                }
                                 table = table + `<td> ${data[rowIndex][key]} </td>`
                             }
                             table = table + `<td>                         <div class="options-update-delete">
-                            <button class="option-update">Update</button>
-                            <button class="option-delete">Delete</button>
+                            <button class="option-update update-button" data-id="${rowIndex}">Update</button>
+                            <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
                         </div> </td>`
                             table = table + "</tr>"
                     }
+             
                     table = table + "</tbody> </table>"
+                    table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
                     document.getElementById("content").innerHTML = table;
-                    console.log(table)
+                    document.querySelectorAll('.update-button').forEach((el)=>{
+                        el.addEventListener('click', (ev)=>{
+                            let buttonElement = ev.target;
+                            let id = buttonElement.getAttribute('data-id')
+                            el.style.color = "red"
+                        })
+                    })
+                    document.querySelectorAll('.delete-button').forEach((el)=>{
+                        el.addEventListener('click', (ev)=>{
+                            deletee(ev)
+                        })
+                    })
                 }
-                
             }
             else{
                 document.getElementById("myp").innerHTML = 'No data here...';
             }
         }
-        xhttp.open("POST", `/bottles/manage?type=${type}&value=${value}&image=${image}&country=${country}`);
-        xhttp.send();
+        let formData = new FormData()
+        formData.append('type', type)
+        formData.append('value', value)
+        formData.append('image', image)
+        formData.append('country', country)
+        xhttp.open("POST", `/bottles/manage/add`);
+        xhttp.send(formData);
     })
+    document.querySelectorAll('.update-button').forEach((el)=>{
+                        el.addEventListener('click', (ev)=>{
+                            let buttonElement = ev.target;
+                            let id = buttonElement.getAttribute('data-id')
+                            el.style.color = "red"
+                        })
+                    })
+
+    //------------------------------------------------------------
+    //Delete
+    //------------------------------------------------------------
+    let dbRowId = 0
+    document.querySelectorAll('.delete-button').forEach((el)=>{
+        //data = JSON.parse
+        el.addEventListener('click', (ev)=>{
+        deletee(ev) 
+        })
+    })
+    function deletee(ev){
+        let dbRowId = -1
+        //data = JSON.parse
+                            let buttonElement = ev.target;
+                            let id = buttonElement.getAttribute('data-id')
+                            dbRowId = data[id]['id']
+        const xhttp = new XMLHttpRequest();
+        let formData = new FormData()
+        formData.append('id', dbRowId)
+        xhttp.open("POST", `/bottles/manage/delete`);
+        xhttp.send(formData);
+        xhttp.onload = function(response) {
+            data = JSON.parse(this.response)
+            if(this.readyState === 4 && this.status === 200)
+            {
+                //document.getElementById("qp").innerHTML = this.response
+                if(data.length == 0){
+                    document.getElementById("content").innerHTML = 'No data here...';
+                } else {
+                    data = JSON.parse(this.response)
+                    table = '<table>'
+                    table = table + "<thead>"
+                    let first = true;
+                    table = table + "<tr>"
+                    for(let key in data[0]){
+                        // if(key == 'id'){
+                        //     continue
+                        // }
+                        key = key.charAt(0).toUpperCase() + key.slice(1);
+                        table = table + `<th> ${key} </th>`
+                    }
+                    table = table + `<th> Actions </th>`
+                    table = table + "</tr>"
+                    table = table + "</thead>"
+                    table = table + "<tbody>"
+                    let idRow = -1
+                    data = JSON.parse(this.response)
+                    for(let rowIndex in data){
+                            table = table + "<tr >"
+                            for(let key in data[rowIndex]){
+                                if(key == 'id'){
+                                    idRow = data[rowIndex][key];
+                                }
+                                table = table + `<td> ${data[rowIndex][key]} </td>`
+                            }
+                            table = table + `<td>                         <div class="options-update-delete">
+                            <button class="option-update update-button" data-id="${rowIndex}">Update</button>
+                            <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                        </div> </td>`
+                            table = table + "</tr>"
+                    }
+             
+                    table = table + "</tbody> </table>"
+                    table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                    document.getElementById("content").innerHTML = table;
+                    document.querySelectorAll('.update-button').forEach((el)=>{
+                        el.addEventListener('click', (ev1)=>{
+                            let buttonElement = ev1.target;
+                            let id = buttonElement.getAttribute('data-id')
+                            el.style.color = "red"
+                        })
+                    })
+                    document.querySelectorAll('.delete-button').forEach((el)=>{
+                        el.addEventListener('click', (ev1)=>{
+                            deletee(ev1)
+                        })
+                    })
+                }
+            }
+            else{
+                document.getElementById("myp").innerHTML = 'No data here...';
+            }
+        }
+    }
 </script>
 
 <script type="text/javascript">
