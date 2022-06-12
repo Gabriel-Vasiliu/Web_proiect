@@ -117,8 +117,30 @@ class PagesController
     public function top()
     {
         $bottles = App::get('database')->selectMostValuableBottles('bottles', 'user_bottles', 'users');
+        
+        $rss = "<?xml version='1.0' encoding='UTF-8'?>";
+        $rss .= "<rss version='2.0'>";
+        $rss .= "<channel>";
+        $rss .= "<title>Collecting Bottles</title>";
+        $rss .= "<description>Collecting Bottles - Top 10</description>";
+        $rss .= "<language>en-us</language>";
+        $rss .= "<items>";
+        
+        foreach($bottles as $bottle){
+            $rss .= "<item>
+            <type>$bottle->type</type>
+            <value>$bottle->value</value>
+            <country>$bottle->country</country>
+            <username>$bottle->username</username>
+            </item>";
+        }
+
+        $rss .= "</items>";
+        $rss .= "</channel></rss>";
+
         return view('top', [
-            'bottles' => $bottles
+            'bottles' => $bottles,
+            'rss' => $rss
         ]);
     }
 

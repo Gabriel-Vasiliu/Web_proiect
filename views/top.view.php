@@ -24,7 +24,11 @@
             <?php endforeach ?>
         </tbody>
     </table>
+
+    <?php file_put_contents("rss.xml", $rss); ?>
+
     <input type="button" onclick="generate()" value="Export To PDF" />
+    <a href="../rss.xml">RSS</a>
 <?php else: ?>
     <p>No data here...</p>
 <?php endif; ?>
