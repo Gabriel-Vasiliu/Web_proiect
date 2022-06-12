@@ -16,3 +16,6 @@ $router->get('logout', 'PagesController@logout');
 $router->post('register', 'PagesController@register'); 
 $router->post('login', 'PagesController@login');
 $router->post('bottles/manage', 'PagesController@manage');
+$router->post('bottles/manage/add', 'PagesController@add');
+$router->post('bottles/manage/delete', 'PagesController@delete');
+$router->post('bottles/manage/update', 'PagesController@update');
