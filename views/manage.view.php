@@ -48,6 +48,7 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+        <input type="button" value="Export to CSV" onclick="tableToCSV()">
     <?php else: ?>
         <p>No data here...</p>
     <?php endif; ?>
@@ -111,6 +112,35 @@
         xhttp.open("POST", `/bottles/manage?type=${type}&value=${value}&image=${image}&country=${country}`);
         xhttp.send();
     })
+</script>
+
+<script type="text/javascript">
+    function tableToCSV(){
+        var data = [];
+        var rows = document.getElementsByTagName('tr');
+        for(var index = 0; index < rows.length; index++){
+            var cols = rows[index].querySelectorAll('td,th');
+            var row = [];
+            for(var i = 0; i < cols.length - 1; i++){
+                row.push(cols[i].innerHTML);
+            }
+            data.push(row.join(","));
+        }
+        data = data.join('\n');
+        downloadCSV(data);
+    }
+
+    function downloadCSV(data){
+        CSVFile = new Blob([data], {type: "text/csv"});
+        var link = document.createElement('a');
+        link.download = "exportData.csv";
+        var url = window.URL.createObjectURL(CSVFile);
+        link.href = url;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 </script>
 
 <?php require 'partials/footer.php'; ?>
