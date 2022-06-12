@@ -25,6 +25,12 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function deleteBottle($id){
+        $sql = "DELETE FROM bottles WHERE id={$id}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+    }
+
     protected function getBottleId(){
         $sql = "SELECT max(id) as id from bottles";
         $statement = $this->pdo->prepare($sql);
