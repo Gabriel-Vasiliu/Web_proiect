@@ -141,4 +141,40 @@ class PagesController
             'userBottles' => $userBottles
         ]);
     }
+
+        public function add()
+    {   
+        $requestBody = Request::getBody();
+        $bottle = new Bottle();
+        if(!empty($requestBody)){
+            $bottle->loadData($requestBody);
+            //die(var_dump($bottle->image));
+            if($bottle->validate() && $bottle->save()){
+                App::get('database')->insertBottleInUserBottlesTable();
+                $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+                //die(var_dump($userBottles));
+                //App::get('session')->setFlash('success', 'Thanks for registering');
+                return json_encode($userBottles);
+            }
+        }
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
+    }
+
+    public function delete(){
+        $requestBody = Request::getBody();
+        if(!empty($requestBody)){
+            App::get('database')->deleteBottle($requestBody['id']);
+            $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+            return json_encode($userBottles);
+        }
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
+    }
 }
