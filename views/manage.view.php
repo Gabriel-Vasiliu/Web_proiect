@@ -133,6 +133,7 @@
 
                             table = table + "</tbody> </table>"
                             table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
                             document.querySelectorAll('.delete-button').forEach((el) => {
