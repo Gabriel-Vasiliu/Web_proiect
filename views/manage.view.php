@@ -100,7 +100,7 @@
                         if (data.length == 0) {
                             document.getElementById("content").innerHTML = 'No data here...';
                         } else {
-                            table = '<table>'
+                            table = '<table id="table">'
                             table = table + "<thead>"
                             let first = true;
                             table = table + "<tr>"
@@ -171,9 +171,6 @@
             })
             
             dialog.showModal()
-            el.style.color = "red"
-
-            //
         })
     }
     //const arr
