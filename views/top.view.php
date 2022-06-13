@@ -29,7 +29,7 @@
 
     <input type="button" onclick="generate()" value="Export To PDF" />
     <input type="button" value="Export to CSV" onclick="tableToCSV()">
-    <a href="../rss.xml">RSS</a>
+    <a href="../rss.xml"><img src="../images/rss.png" alt="RSS" class="rss"></a>
 <?php else: ?>
     <p>No data here...</p>
 <?php endif; ?>
