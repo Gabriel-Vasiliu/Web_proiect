@@ -199,4 +199,18 @@ class PagesController
             'userBottles' => $userBottles
         ]);
     }
+
+    public function update(){
+        $requestBody = Request::getBody();
+        if(!empty($requestBody)){
+            App::get('database')->updateBottle($requestBody);
+            $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+            return json_encode($userBottles);
+        }
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
+    }
 }

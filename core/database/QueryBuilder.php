@@ -31,6 +31,12 @@ class QueryBuilder {
         $statement->execute();
     }
 
+    public function updateBottle($data){
+        $sql = "UPDATE bottles SET type='{$data['type']}', image='{$data['image']}', value='{$data['value']}', country='{$data['country']}' WHERE id={$data['id']}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+    }
+
     protected function getBottleId(){
         $sql = "SELECT max(id) as id from bottles";
         $statement = $this->pdo->prepare($sql);
