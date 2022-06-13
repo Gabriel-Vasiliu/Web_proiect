@@ -1,19 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel><title>Collecting Bottles</title><description>Collecting Bottles - Top 10</description><language>en-us</language><items><item>
-            <type>bidon</type>
-            <value>7000</value>
-            <country>peru</country>
-            <username>admin</username>
+            <type>Sticla</type>
+            <value>300</value>
+            <country>Romania</country>
+            <username>Claudiu</username>
             </item><item>
-            <type>bidon</type>
-            <value>4300</value>
-            <country>grecia</country>
-            <username>user</username>
+            <type>dsadsa</type>
+            <value>300</value>
+            <country>RomaniaBa</country>
+            <username>Daniel</username>
             </item><item>
-            <type>butelca</type>
-            <value>3000</value>
-            <country>egipt</country>
-            <username>admin</username>
+            <type>dsadsa</type>
+            <value>300</value>
+            <country>RomaniaBa</country>
+            <username>Daniel</username>
             </item><item>
+<<<<<<< HEAD
             <type>damigeana</type>
             <value>3000</value>
             <country>africa</country>
@@ -48,4 +49,10 @@
             <value>602</value>
             <country>romania</country>
             <username>user</username>
+=======
+            <type>Damigeana</type>
+            <value>200</value>
+            <country>Romania</country>
+            <username>Claudiu</username>
+>>>>>>> c1b5fe3cf6ed51b334c7e631d26b739653dd7f5a
             </item></items></channel></rss>

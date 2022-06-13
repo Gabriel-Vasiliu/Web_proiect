@@ -308,8 +308,22 @@ tr:nth-child(even) {
     font-size: 20px;
 }
 
+<<<<<<< HEAD
 .rss {
   margin-left: 30px;
   width: 30px; 
   height: 30px;
+=======
+/*dialog*/
+
+dialog::backdrop{
+  background: rgb(34, 34, 34, .4);
+}
+
+dialog {
+  border: 1px solid black;
+  border-radius: 6px;
+  width: 80vw;
+  max-width: 500px;
+>>>>>>> c1b5fe3cf6ed51b334c7e631d26b739653dd7f5a
 }
