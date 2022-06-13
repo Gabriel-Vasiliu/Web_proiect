@@ -52,12 +52,8 @@
             </tbody>
         </table>
         <input type="button" value="Export to CSV" onclick="tableToCSV()">
-<<<<<<< HEAD
         <input type="button" onclick="generatePDF()" value="Export To PDF" />
     <?php else: ?>
-=======
-    <?php else : ?>
->>>>>>> c1b5fe3cf6ed51b334c7e631d26b739653dd7f5a
         <p>No data here...</p>
     <?php endif; ?>
 </div>
@@ -337,17 +333,10 @@
     function tableToCSV() {
         var data = [];
         var rows = document.getElementsByTagName('tr');
-<<<<<<< HEAD
         for(var index = 1; index < rows.length; index++){
             var cols = rows[index].querySelectorAll('td,th');
             var row = [];
             for(var i = 1; i < cols.length - 1; i++){
-=======
-        for (var index = 0; index < rows.length; index++) {
-            var cols = rows[index].querySelectorAll('td,th');
-            var row = [];
-            for (var i = 0; i < cols.length - 1; i++) {
->>>>>>> c1b5fe3cf6ed51b334c7e631d26b739653dd7f5a
                 row.push(cols[i].innerHTML);
             }
             data.push(row.join(","));
