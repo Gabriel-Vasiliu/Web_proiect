@@ -24,6 +24,11 @@
             <country>romania</country>
             <username>user</username>
             </item><item>
+            <type>sticla</type>
+            <value>1000</value>
+            <country>bulgaria</country>
+            <username>admin</username>
+            </item><item>
             <type>damigeana</type>
             <value>900</value>
             <country>romania</country>
@@ -42,10 +47,5 @@
             <type>sticla</type>
             <value>602</value>
             <country>romania</country>
-            <username>user</username>
-            </item><item>
-            <type>sticla</type>
-            <value>430</value>
-            <country>africa</country>
             <username>user</username>
             </item></items></channel></rss>

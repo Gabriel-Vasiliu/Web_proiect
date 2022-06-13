@@ -18,7 +18,7 @@
 <h2>My bottles:</h2>
 <div id="content">
     <?php if (!empty($userBottles)) : ?>
-        <table>
+        <table id="table">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -52,6 +52,7 @@
             </tbody>
         </table>
         <input type="button" value="Export to CSV" onclick="tableToCSV()">
+        <input type="button" onclick="generatePDF()" value="Export To PDF" />
     <?php else: ?>
         <p>No data here...</p>
     <?php endif; ?>
@@ -74,7 +75,7 @@
                 if(data.length == 0){
                     document.getElementById("content").innerHTML = 'No data here...';
                 } else {
-                    table = '<table>'
+                    table = '<table id="table">'
                     table = table + "<thead>"
                     let first = true;
                     table = table + "<tr>"
@@ -107,6 +108,7 @@
              
                     table = table + "</tbody> </table>"
                     table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                    table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach((el)=>{
                         el.addEventListener('click', (ev)=>{
@@ -172,7 +174,7 @@
                     document.getElementById("content").innerHTML = 'No data here...';
                 } else {
                     data = JSON.parse(this.response)
-                    table = '<table>'
+                    table = '<table id="table">'
                     table = table + "<thead>"
                     let first = true;
                     table = table + "<tr>"
@@ -206,6 +208,7 @@
              
                     table = table + "</tbody> </table>"
                     table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                    table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach((el)=>{
                         el.addEventListener('click', (ev1)=>{
@@ -228,14 +231,17 @@
     }
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
 <script type="text/javascript">
     function tableToCSV(){
         var data = [];
         var rows = document.getElementsByTagName('tr');
-        for(var index = 0; index < rows.length; index++){
+        for(var index = 1; index < rows.length; index++){
             var cols = rows[index].querySelectorAll('td,th');
             var row = [];
-            for(var i = 0; i < cols.length - 1; i++){
+            for(var i = 1; i < cols.length - 1; i++){
                 row.push(cols[i].innerHTML);
             }
             data.push(row.join(","));
@@ -255,6 +261,57 @@
         link.click();
         document.body.removeChild(link);
     }
+
+    function generatePDF() {
+    var doc = new jsPDF('p', 'pt', 'letter');
+    var htmlstring = '';
+    var tempVarToCheckPageHeight = 0;
+    var pageHeight = 0;
+    pageHeight = doc.internal.pageSize.height;
+    specialElementHandlers = {  
+        '#bypassme': function (element, renderer) {  
+            return true
+        }
+    };
+    margins = {
+        top: 150,
+        bottom: 60,
+        left: 40,
+        right: 40,
+        width: 600
+    };
+    var res = doc.autoTableHtmlToJson(document.getElementById("table"));
+    var columns = [res.columns[0], res.columns[1], res.columns[2], res.columns[3], res.columns[4]];
+    var y = 20;
+    doc.setLineWidth(2);
+    doc.text(250, y = y + 30, "Bottles");
+    doc.autoTable(columns, res.data, {
+        startY: 70,
+        theme: 'grid',
+        columnStyles: {
+            0: {
+                cellWidth: 30,
+            },
+            1: {
+                cellWidth: 100,
+            },
+            2: {
+                cellWidth: 100,
+            },
+            3: {
+                cellWidth: 50,
+            },
+            4: {
+                cellWidth: 100,
+            }
+        },
+        styles: {
+            minCellHeight: 20
+        }
+    })
+    doc.save('bottles.pdf');
+}
+
 </script>
 
 <?php require 'partials/footer.php'; ?>

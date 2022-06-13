@@ -3,7 +3,7 @@
 <h2> The most expensive bottle: </h2>
 
 <?php if ($bestBottle->type != '') : ?>
-<table>
+<table id="table2">
     <thead>
         <tr>
             <th>Type</th>
@@ -28,7 +28,7 @@
 <h2> Number of bottles: <?= $nrBottles ?></h2>
 
 <?php if (!empty($types)) : ?>
-    <table id="table">
+    <table id="table1">
         <thead>
             <tr>
                 <th>Type</th>
@@ -45,6 +45,7 @@
         </tbody>
     </table>
     <input type="button" onclick="generate()" value="Export To PDF" />
+    <input type="button" value="Export to CSV" onclick="generateCSV()">
 <?php else: ?>
     <p>No data here...</p>
 <?php endif; ?>
@@ -53,6 +54,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
 <script>
+
+function generateCSV(){
+    var data = [];
+    var rows = document.getElementsByTagName('tr');
+    for(var index = 0; index < rows.length; index++){
+        var cols = rows[index].querySelectorAll('td,th');
+        var row = [];
+        for(var i = 0; i < cols.length; i++){
+            row.push(cols[i].innerHTML);
+        }
+        data.push(row.join(","));
+    }
+    data = data.join('\n');
+    downloadCSV(data);
+}
+
+function downloadCSV(data){
+    CSVFile = new Blob([data], {type: "text/csv"});
+    var link = document.createElement('a');
+    link.download = "statistici.csv";
+    var url = window.URL.createObjectURL(CSVFile);
+    link.href = url;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 function generate() {
     var doc = new jsPDF('p', 'pt', 'letter');
     var htmlstring = '';
@@ -73,10 +102,11 @@ function generate() {
     };
     var y = 20;
     doc.setLineWidth(2);
-    doc.text(200, y = y + 30, "STATISTICS");
+    doc.text(250, y = y + 30, "STATISTICS");
+    doc.text(70, y = y + 50, "The most expensive bottle");
     doc.autoTable({
-        html: '#table',
-        startY: 70,
+        html: '#table2',
+        startY: 110,
         theme: 'grid',
         columnStyles: {
             0: {
@@ -84,6 +114,30 @@ function generate() {
             },
             1: {
                 cellWidth: 100,
+            },
+            2: {
+                cellWidth: 50,
+            },
+            3: {
+                cellWidth: 100,
+            }
+        },
+        styles: {
+            minCellHeight: 20
+        }
+    })
+
+    doc.text(70, y = y + 90, "Number of bottles: " + <?= $nrBottles ?>);
+    doc.autoTable({
+        html: '#table1',
+        startY: 200,
+        theme: 'grid',
+        columnStyles: {
+            0: {
+                cellWidth: 100,
+            },
+            1: {
+                cellWidth: 50,
             }
         },
         styles: {

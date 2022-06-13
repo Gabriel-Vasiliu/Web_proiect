@@ -28,6 +28,7 @@
     <?php file_put_contents("rss.xml", $rss); ?>
 
     <input type="button" onclick="generate()" value="Export To PDF" />
+    <input type="button" value="Export to CSV" onclick="tableToCSV()">
     <a href="../rss.xml">RSS</a>
 <?php else: ?>
     <p>No data here...</p>
@@ -37,6 +38,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
 <script>
+
+function tableToCSV(){
+    var data = [];
+    var rows = document.getElementsByTagName('tr');
+    for(var index = 0; index < rows.length; index++){
+        var cols = rows[index].querySelectorAll('td,th');
+        var row = [];
+        for(var i = 0; i < cols.length; i++){
+            row.push(cols[i].innerHTML);
+        }
+        data.push(row.join(","));
+    }
+    data = data.join('\n');
+    downloadCSV(data);
+}
+
+function downloadCSV(data){
+    CSVFile = new Blob([data], {type: "text/csv"});
+    var link = document.createElement('a');
+    link.download = "top.csv";
+    var url = window.URL.createObjectURL(CSVFile);
+    link.href = url;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 function generate() {
     var doc = new jsPDF('p', 'pt', 'letter');
     var htmlstring = '';
@@ -57,7 +86,7 @@ function generate() {
     };
     var y = 20;
     doc.setLineWidth(2);
-    doc.text(200, y = y + 30, "TOP");
+    doc.text(250, y = y + 30, "TOP");
     doc.autoTable({
         html: '#table',
         startY: 70,
@@ -70,7 +99,7 @@ function generate() {
                 cellWidth: 100,
             },
             2: {
-                cellWidth: 100,
+                cellWidth: 50,
             },
             3: {
                 cellWidth: 100,
