@@ -307,3 +307,16 @@ tr:nth-child(even) {
     outline: none;
     font-size: 20px;
 }
+
+/*dialog*/
+
+dialog::backdrop{
+  background: rgb(34, 34, 34, .4);
+}
+
+dialog {
+  border: 1px solid black;
+  border-radius: 6px;
+  width: 80vw;
+  max-width: 500px;
+}
