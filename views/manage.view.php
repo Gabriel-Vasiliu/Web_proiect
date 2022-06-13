@@ -108,7 +108,7 @@
                                 // if(key == 'id'){
                                 //     continue
                                 // }
-                                key = key.charAt(0).toUpperCase() + key.slice();
+                                key = key.charAt(0).toUpperCase() + key.slice(1);
                                 table = table + `<th> ${key} </th>`
                             }
                             table = table + `<th> Actions </th>`
