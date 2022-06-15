@@ -19,3 +19,6 @@ $router->post('bottles/manage', 'PagesController@manage');
 $router->post('bottles/manage/add', 'PagesController@add');
 $router->post('bottles/manage/delete', 'PagesController@delete');
 $router->post('bottles/manage/update', 'PagesController@update');
+$router->post('bottles/manage/send', 'PagesController@send');
+$router->post('bottles/manage/accept','PagesController@acceptBottles');
+$router->post('bottles/manage/doNotAccept', 'PagesController@doNotAcceptBottles');
