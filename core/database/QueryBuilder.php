@@ -17,12 +17,143 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    protected function getUserIdByUsername(){
-        $username = App::$user->username;
+    protected function getUserIdByUsername($username){
         $sql = "SELECT id FROM users WHERE username='{$username}'";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getBottleById($id){
+        $sql = "SELECT type, image, value, country FROM bottles WHERE id={$id}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getUsersIdsWithBottles(){
+        $users = $this->getDistinctUsersNamesWithIdFromRequests();
+        $bottlesRequests = $this->getNewBottlesRequests();
+        $usersWithBottlesRows = [];
+        foreach($users as $user){
+            foreach($user as $userName=>$userId){
+                foreach($bottlesRequests[$userId] as $index=>$bottleId){
+                    //die(var_dump($bottleId));
+                    $sql = "SELECT type, image, value, country FROM bottles WHERE id={$bottleId}";
+                    $statement = $this->pdo->prepare($sql);
+                    $statement->execute();
+                    $result = $statement->fetchAll(PDO::FETCH_OBJ);
+                    $usersWithBottlesRows[$userId][] = $result;
+                }
+            }
+        }
+        return $usersWithBottlesRows;
+    }
+
+    public function acceptBottlesFromTransferBottlesTable($requestBody){
+        $idUsernameFrom = $requestBody['userId'];
+        $bottlesIds = json_decode($requestBody['rows']);
+        //die(var_dump($rows));
+        $idUsernameTo = App::$user->id;
+        foreach($bottlesIds as $bottleId){
+            $sql = "SELECT type, image, value, country FROM bottles WHERE id={$bottleId}";
+
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            $bottleData = $statement->fetchAll(PDO::FETCH_OBJ);
+            $bottleData = $bottleData[0];
+
+            $sql = "INSERT INTO bottles VALUES(0,'{$bottleData->type}', '{$bottleData->image}', {$bottleData->value}, '{$bottleData->country}')";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+
+            $sql = "DELETE FROM bottles WHERE id={$bottleId}";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+
+            $lastBottleId =  $this->getBottleId();
+            $sql = "INSERT INTO user_bottles VALUES({$idUsernameTo}, {$lastBottleId[0]->id})";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+        }
+    }
+
+    public function getNewBottlesRequests(){
+        $requests = [];
+        $username = App::$user->username;
+        $usernameId = App::$user->id;
+
+        $sql = "SELECT id_username_from, id_bottle FROM transfer_bottles WHERE id_username_to={$usernameId}";
+        $statement = $this->pdo->prepare($sql);
+
+        $statement->execute();
+
+        $rows = $statement->fetchAll(PDO::FETCH_OBJ);
+        foreach($rows as $row){
+            //die(var_dump($row->id_username_from));
+            $requests[$row->id_username_from][] = $row->id_bottle;
+        }
+        return $requests;
+    }
+
+    public function getUsersNamesFromRequests(){
+        $users = [];
+        $usernameId = App::$user->id;
+        $sql = "SELECT id_username_from FROM transfer_bottles WHERE id_username_to={$usernameId}";
+        $statement = $this->pdo->prepare($sql);
+
+        $statement->execute();
+
+        $ids = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        foreach($ids as $id){
+            $sql = "SELECT username FROM users WHERE id={$id->id_username_from}";
+
+            $statement = $this->pdo->prepare($sql);
+
+            $statement->execute();
+
+            $username = $statement->fetchAll(PDO::FETCH_OBJ);
+
+            //die(var_dump($username[0]->username));
+
+            $users[] = $username[0]->username;
+        }
+        //die(var_dump($users));
+        return $users;
+    }
+
+    public function getDistinctUsersNamesWithIdFromRequests(){
+        $users = [];
+        $usernameId = App::$user->id;
+        $sql = "SELECT DISTINCT id_username_from FROM transfer_bottles WHERE id_username_to={$usernameId}";
+        $statement = $this->pdo->prepare($sql);
+
+        $statement->execute();
+
+        $ids = $statement->fetchAll(PDO::FETCH_OBJ);
+        foreach($ids as $id){
+            $sql = "SELECT username FROM users WHERE id={$id->id_username_from}";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+
+            $username = $statement->fetchAll(PDO::FETCH_OBJ);
+            //die(var_dump($username[0]->username));
+            $users[] = [$username[0]->username => $id->id_username_from];
+        }
+        return $users;
+    }
+
+    public function insertInTransferBottlesTable($requestBody){
+        $idUsernameFrom = $this->getUserIdByUsername(App::$user->username)[0]->id;
+        $idUsernameTo = ($this->getUserIdByUsername($requestBody['username']))[0]->id;
+        $ids = json_decode($requestBody['ids']);
+        foreach($ids as $idBottle){
+            $sql = "INSERT INTO transfer_bottles VALUES({$idUsernameFrom}, {$idUsernameTo}, {$idBottle})";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            //die(var_dump("here"));
+        }
     }
 
     public function deleteBottle($id){
@@ -45,7 +176,7 @@ class QueryBuilder {
     }
 
     public function insertBottleInUserBottlesTable(){
-        $userId = $this->getUserIdByUsername()[0]->id;
+        $userId = $this->getUserIdByUsername(App::$user->username)[0]->id;
         $bottleId = $this->getBottleId()[0]->id;
         $sql = "INSERT INTO user_bottles VALUES({$userId},{$bottleId})";
         $statement = $this->pdo->prepare($sql);
