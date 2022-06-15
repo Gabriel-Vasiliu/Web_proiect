@@ -1,4 +1,8 @@
-<?php require 'partials/header.php'; ?>
+<?php
+
+use App\Core\App;
+
+ require 'partials/header.php'; ?>
 
 <h1> Manage page </h1>
 
@@ -44,6 +48,7 @@
                             <div class="options-update-delete">
                                 <button class="option-update update-button" data-id="<?= $index ?>">Update</button>
                                 <button class="option-delete delete-button" data-id="<?= $index ?>">Delete</button>
+                                <input class="check-box" type="checkbox" data-id="<?= $index ?>">
                             </div>
                         </td>
                     </tr>
@@ -53,12 +58,15 @@
         </table>
         <input type="button" value="Export to CSV" onclick="tableToCSV()">
         <input type="button" onclick="generatePDF()" value="Export To PDF" />
+        <button style="background-color:orange;" id="send-button">Send bottles</button>
+        <button id="show-new-request">New bottles request</button>
     <?php else: ?>
+        <button id="show-new-request">New bottles request</button>
         <p>No data here...</p>
     <?php endif; ?>
 </div>
 
-<dialog>
+<dialog class="update-dialog">
     <h3>Are you sure?</h3>
 
     <p id="dbRowId">id</p>
@@ -67,7 +75,7 @@
         <input type="text" name="type" class="dialog-input">
         <input type="text" name="value"  class="dialog-input">
         <input type="text" name="image"  class="dialog-input">
-        <input type="text" name="country"  class="dialog-input">
+        <input type="text" name="country"  class="dialog-input">    
     </form>
     <form method="dialog">
         <button value="yes">Yes</button>
@@ -76,12 +84,300 @@
 
 </dialog>
 
+<dialog class="send-bottles-dialog">
+    <h3>Are you sure?</h3>
+    <p>Enter the username:</p>
+    <div id="send-bottles-form">
+        <form id="send-bottles-form">
+            <input type="text" name="username-to-send" class="send-dialog-input">
+        </form>
+    </div>
+    <form method="dialog">
+        <button value="yes">Yes</button>
+        <button value="no">No</button>
+    </form>
+</dialog>
+
+<dialog class="show-bottles-dialog">
+    <div id="show-bottles-dialog-content">
+        <h3>Users</h3>
+        <p class="username-dialog" data-id="">Username</p>
+        <button class="show-bottles-dialog" data-id="">Show Bottles</button>
+        <form method="dialog">
+            <button value="cancel">Cancel</button>
+        </form>
+    </div>
+</dialog>
 <script>
+    var users = JSON.parse('<?= json_encode($users) ?>')
+    var newBottlesRequests = JSON.parse('<?= json_encode($newBottlesRequests) ?>')
+    var usersWithId = JSON.parse('<?= json_encode($usersWithId) ?>')
+    var usersIdWithBottles = JSON.parse('<?= json_encode($usersIdWithBottles) ?>')
+    ///////////////////////////////////
+    console.log("usersIdWithBottles")
+    console.log(usersIdWithBottles[5])
+
+    /////////////////////////////
+
+    ///////////////////////////
+    console.log("users")
+    console.log(users)
+    console.log("newBottlesRequests")
+    console.log(newBottlesRequests)
+    console.log("resutt")
+    console.log(JSON.parse('<?= json_encode(App::get('database')->getBottleById(190)) ?>'))
     var data = JSON.parse('<?= json_encode($userBottles) ?>')
+    console.log("users with id")
+    console.log(usersWithId)
+    for (let user in usersWithId){
+        let dialogContent = `<p>${user}</p>`
+        console.log(dialogContent)
+    }
     console.log(data)
-    document.querySelector('dialog').addEventListener('close', (ev) => {
+    
+    function showUsersRequestsDialog(){
+        console.log("in show bottles dialog")
+        let dialogContent = '<h3>Users</h3>'
+        for(let index=0; index < usersWithId.length; index++){
+            for (let user in usersWithId[index]){
+                dialogContent += `<p>${user}</p>`
+                dialogContent += `<button value="show-bottles" class="show-bottles-from-user" data-id="${usersWithId[index][user]}">show bottles</button>`
+            }
+        }
+        dialogContent += '<form method="dialog">'
+        dialogContent += '<button value="cancel">Cancel</button>'
+        dialogContent += '<form>'
+        document.getElementById('show-bottles-dialog-content').innerHTML = dialogContent
+        let dialog =  document.querySelector('.show-bottles-dialog') //('dialog')
+        dialog.showModal()
+        document.querySelectorAll('.show-bottles-from-user').forEach((el) => {
+        el.addEventListener('click', (ev) => {
+            showUserBottlesDialog(ev)
+        })
+    })
+    }
+
+    function showUserBottlesDialog(ev){
+        console.log("in show user bottles")
+        username = ''
+        let button = ev.target
+        let userId = button.getAttribute('data-id')
+        for(let index=0; index<usersWithId.length; index++){
+            for (let user in usersWithId[index]){
+                // let dialogContent = `<p>${usersWithId[0][user]}</p>`
+                // console.log(dialogContent)
+                if (usersWithId[index][user] == userId){
+                    username = user
+                }
+            }
+        }
+        let title = `<h3> ${username} </h3>`
+        let first = true;
+        for (let indexRow in usersIdWithBottles[userId]) {
+            bottleData = usersIdWithBottles[userId][indexRow][0]
+            if(first==true){
+                table = '<table>'
+                table = table + "<thead>"
+                table = table + "<tr>"
+                for(key in bottleData){
+                    key = key.charAt(0).toUpperCase() + key.slice(1);
+                    table = table + `<th> ${key} </th>`
+                }
+                table = table + "</tr>"
+                table = table + "</thead>"
+                table = table + "<tbody>"
+                first = false
+            }
+            table = table + "<tr>"
+            for (let key in bottleData) {
+                table += "<td>"
+                table = table + bottleData[key]
+                table += "</td>"
+            }
+            table = table + "</tr>"
+        }
+
+        table = table + "</tbody>"
+        table = table + "</table>"
+
+        let form = '<form method="dialog">'
+
+        form += `<button value='accept' id="accept-button" class='accept-button' data-id='${userId}'>Accept bottles</button>`
+
+        form += "<button value='cancel'>Cancel</button>"
+
+        form += '</form>'
+
+        let dialogContent = title + table + form
+        
+        document.getElementById('show-bottles-dialog-content').innerHTML = dialogContent
+    }
+
+    document.querySelector('.show-bottles-dialog').addEventListener('close', (ev) => {
         let dialog = ev.target
-                //alert('Closed. The user clicked the button with the value of ' + dialog.returnValue)
+        closeValue = dialog.returnValue
+        console.log("closeeed")
+        if(closeValue.localeCompare('accept')==0){
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function(response) {
+                if (this.readyState === 4 && this.status === 200) {
+                        data = JSON.parse(this.response)
+                        console.log("responseeeeeeeeeeeeee");
+                        console.log(JSON.parse(this.response));
+                        if (data.length == 0) {
+                            document.getElementById("content").innerHTML = 'No data here...';
+                        } else {
+                            table = '<table id="table">'
+                            table = table + "<thead>"
+                            let first = true;
+                            table = table + "<tr>"
+                            for (let key in data[0]) {
+                                // if(key == 'id'){
+                                //     continue
+                                // }
+                                key = key.charAt(0).toUpperCase() + key.slice(1);
+                                table = table + `<th> ${key} </th>`
+                            }
+                            table = table + `<th> Actions </th>`
+                            table = table + "</tr>"
+                            table = table + "</thead>"
+                            table = table + "<tbody>"
+                            let idRow = -1
+                            for (let rowIndex in data) {
+                                table = table + "<tr >"
+                                for (let key in data[rowIndex]) {
+                                    if (key == 'id') {
+                                        idRow = data[rowIndex][key];
+                                    }
+                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                }
+                                table = table + `<td>                         <div class="options-update-delete">
+                                    <button class="option-update update-button" data-id="${rowIndex}">Update</button>
+                                    <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                                </div> </td>`
+                                table = table + "</tr>"
+                            }
+
+                            table = table + "</tbody> </table>"
+                            table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
+                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<button id="show-new-request">New bottles request</button>`
+                            document.getElementById("content").innerHTML = table;
+                            document.querySelectorAll('.update-button').forEach(updateFunction)
+                            document.querySelectorAll('.delete-button').forEach((el) => {
+                                el.addEventListener('click', (ev) => {
+                                    deletee(ev)
+                                })
+                            })
+                        }
+                    }
+            }
+            console.log("dataset")
+            acceptButton = dialog.querySelector(`#accept-button`)
+            console.log(acceptButton.dataset.id)
+            let formData = new FormData()
+            formData.append('userId', acceptButton.dataset.id)
+            formData.append('rows', JSON.stringify(newBottlesRequests[acceptButton.dataset.id]))
+            xhttp.open("POST", `/bottles/manage/accept`);
+            xhttp.send(formData);
+        }
+    })
+
+    document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
+
+    function sendBottles(){
+        let dialog =  document.querySelector('.send-bottles-dialog') //('dialog')
+        dialog.showModal()
+    }
+
+    document.querySelectorAll('.show-bottles-from-user').forEach((el) => {
+        el.addEventListener('click', (ev) => {
+            console.log("hello")
+            showUserBottlesDialog(ev)
+        })
+    })
+
+    document.querySelector('.send-bottles-dialog').addEventListener('close', (ev) => {
+        let dialog = ev.target
+        closeValue = dialog.returnValue
+        if(closeValue.localeCompare('yes')==0){
+            const xhttp = new XMLHttpRequest();
+                    xhttp.onload = function(response) {
+                    if (this.readyState === 4 && this.status === 200) {
+                        data = JSON.parse(this.response)
+                        if (data.length == 0) {
+                            document.getElementById("content").innerHTML = 'No data here...';
+                        } else {
+                            table = '<table id="table">'
+                            table = table + "<thead>"
+                            let first = true;
+                            table = table + "<tr>"
+                            for (let key in data[0]) {
+                                // if(key == 'id'){
+                                //     continue
+                                // }
+                                key = key.charAt(0).toUpperCase() + key.slice(1);
+                                table = table + `<th> ${key} </th>`
+                            }
+                            table = table + `<th> Actions </th>`
+                            table = table + "</tr>"
+                            table = table + "</thead>"
+                            table = table + "<tbody>"
+                            let idRow = -1
+                            for (let rowIndex in data) {
+                                table = table + "<tr >"
+                                for (let key in data[rowIndex]) {
+                                    if (key == 'id') {
+                                        idRow = data[rowIndex][key];
+                                    }
+                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                }
+                                table = table + `<td>                         <div class="options-update-delete">
+                                    <button class="option-update update-button" data-id="${rowIndex}">Update</button>
+                                    <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                                </div> </td>`
+                                table = table + "</tr>"
+                            }
+
+                            table = table + "</tbody> </table>"
+                            table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
+                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
+                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<button id="show-new-request">New bottles request</button>`
+                            document.getElementById("content").innerHTML = table;
+                            document.querySelectorAll('.update-button').forEach(updateFunction)
+                            document.querySelectorAll('.delete-button').forEach((el) => {
+                                el.addEventListener('click', (ev) => {
+                                    deletee(ev)
+                                })
+                            })
+                        }
+                    }
+                }
+                        const idRows = [];
+                document.querySelectorAll('.check-box').forEach((el) => {
+                    if(el.checked){
+                        let id = el.getAttribute('data-id');
+                        idRows.push(data[id]['id']);
+                    }
+                })
+                console.log(idRows);
+                let formData = new FormData()
+                    formData.append('username', dialog.querySelector(`#send-bottles-form .send-dialog-input[name=username-to-send]`).value)
+                    formData.append('ids', JSON.stringify(idRows))
+                    xhttp.open("POST", `/bottles/manage/send`);
+                    xhttp.send(formData);
+        }
+    })
+
+    document.getElementById('send-button').addEventListener('click', sendBottles)
+
+    document.querySelector('.update-dialog').addEventListener('close', (ev) => {
+        let dialog = ev.target
+                alert('Closed. The user clicked the button with the value of ' + dialog.returnValue)
 
                 closeValue = dialog.returnValue
                 if(closeValue.localeCompare('yes')==0){
@@ -127,6 +423,7 @@
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                                     <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
                                 </div> </td>`
                                 table = table + "</tr>"
                             }
@@ -134,6 +431,8 @@
                             table = table + "</tbody> </table>"
                             table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
                             table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
+                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
                             document.querySelectorAll('.delete-button').forEach((el) => {
@@ -160,7 +459,7 @@
             let id = buttonElement.getAttribute('data-id')
             let elData = data[id]
 
-            let dialog =  document.querySelector('dialog')
+            let dialog =  document.querySelector('.update-dialog') //('dialog')
             let lookupTable = Object.keys(elData).slice()
             let rowIdFromDb = dialog.querySelector(`#dbRowId`)
             rowIdFromDb.innerHTML = "ID=" + elData['id']
@@ -215,6 +514,7 @@
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                             <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                            <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
                         </div> </td>`
                         table = table + "</tr>"
                     }
@@ -222,6 +522,8 @@
                     table = table + "</tbody> </table>"
                     table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
                     table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
+                    table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                    table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
                     document.querySelectorAll('.delete-button').forEach((el) => {
@@ -302,6 +604,7 @@
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                             <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
+                            <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
                         </div> </td>`
                         table = table + "</tr>"
                     }
@@ -309,6 +612,8 @@
                     table = table + "</tbody> </table>"
                     table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
                     table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
+                    table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                    table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
                     document.querySelectorAll('.delete-button').forEach((el) => {
