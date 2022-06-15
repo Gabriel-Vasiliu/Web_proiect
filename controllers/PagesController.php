@@ -170,7 +170,12 @@ class PagesController
         }
 
         return view('manage', [
-            'userBottles' => $userBottles
+            'userBottles' => $userBottles,
+            'newBottlesRequests' => App::get('database')->getNewBottlesRequests(),
+            'users' => App::get('database')->getUsersNamesFromRequests(),
+            'usersWithId' => App::get('database')->getDistinctUsersNamesWithIdFromRequests(),
+            'usersWithBottlesRows' => App::get('database')->getUsersIdsWithBottles(),
+            'usersIdWithBottles' => App::get('database')->getUsersIdsWithBottles()
         ]);
     }
 
@@ -222,5 +227,33 @@ class PagesController
         return view('manage', [
             'userBottles' => $userBottles
         ]);
+    }
+
+    public function send(){
+        $requestBody = Request::getBody();
+        if(!empty($requestBody)){
+            App::get('database')->insertInTransferBottlesTable($requestBody);
+            $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+            return json_encode($userBottles);
+        }
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return view('manage', [
+            'userBottles' => $userBottles
+        ]);
+    }
+
+    public function acceptBottles(){
+        $requestBody = Request::getBody();
+        App::get('database')->acceptBottlesFromTransferBottlesTable($requestBody);
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        //die(var_dump($userBottles));
+        return json_encode($userBottles);
+    }
+
+    public function doNotAcceptBottles(){
+        App::get('database')->deleteBottlesFromTransferBottlesTable();
+        $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
+        return json_encode($userBottles);
     }
 }
