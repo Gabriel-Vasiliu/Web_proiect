@@ -7,7 +7,7 @@
     <label>Type</label>
     <input type="text" name="type" id="_type">
     <label>Image</label>
-    <input type="text" name="image" id="_image">
+    <input type="file" name="image" id="_image" accept="image/png, image/jpg, image/jpeg">
     <label>Value</label>
     <input type="number" name="value" id="_value" min="0">
     <label>Country</label>

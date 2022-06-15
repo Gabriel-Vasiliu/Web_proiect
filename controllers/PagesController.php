@@ -159,6 +159,16 @@ class PagesController
         }
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
         //die(var_dump($userBottles));
+
+        if(!is_dir("./public")){
+            mkdir("./public", 0777, true);
+        }
+
+        $directory_path = "./public/" . App::$user->username;
+        if(!is_dir($directory_path)){
+            mkdir($directory_path, 0777, true);
+        }
+
         return view('manage', [
             'userBottles' => $userBottles
         ]);
