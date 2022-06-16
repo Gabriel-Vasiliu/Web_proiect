@@ -37,9 +37,11 @@ class Request
     }
 
     public static function getBody(){
-        $data = [];
         foreach($_POST as $key => $value){
             $data[$key] = $value;
+        }
+        if(!empty($_FILES)){
+            $data['image'] = $_FILES['image']['name'];
         }
         return $data;
     }

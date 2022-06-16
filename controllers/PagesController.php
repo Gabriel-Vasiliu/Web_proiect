@@ -145,7 +145,7 @@ class PagesController
     }
 
     public function manage($queryParams)
-    {        
+    {
         $bottle = new Bottle();
         if(!empty($queryParams)){
             $bottle->loadData($queryParams);

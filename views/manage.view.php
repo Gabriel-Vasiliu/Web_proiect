@@ -7,7 +7,7 @@ use App\Core\App;
 <h1> Manage page </h1>
 
 <h2>Add bottle:</h2>
-<form>
+<form enctype='multipart/form-data'>
     <label>Type</label>
     <input type="text" name="type" id="_type">
     <label>Image</label>
@@ -16,7 +16,7 @@ use App\Core\App;
     <input type="number" name="value" id="_value" min="0">
     <label>Country</label>
     <input type="text" name="country" id="_country">
-    <input type="button" value="Add" id="add-button">
+    <input type="button" value="Add" name="submit" id="add-button">
 </form>
 
 <h2>My bottles:</h2>
@@ -74,7 +74,7 @@ use App\Core\App;
         <input type="hidden" name="id" class="dialog-input">
         <input type="text" name="type" class="dialog-input">
         <input type="text" name="value"  class="dialog-input">
-        <input type="text" name="image"  class="dialog-input">
+        <input type="file" name="image"  class="dialog-input">
         <input type="text" name="country"  class="dialog-input">    
     </form>
     <form method="dialog">
@@ -133,6 +133,7 @@ use App\Core\App;
         let dialogContent = `<p>${user}</p>`
         console.log(dialogContent)
     }
+    console.log("-----------------------------------")
     console.log(data)
     
     function showUsersRequestsDialog(){
@@ -477,8 +478,17 @@ use App\Core\App;
         data = JSON.parse('<?= json_encode($userBottles) ?>')
         var type = document.getElementById('_type').value
         var value = document.getElementById('_value').value
-        var image = document.getElementById('_image').value
+        var image = document.getElementById('_image').files[0]
         var country = document.getElementById('_country').value
+        console.log("file::")
+        console.log(image)
+        //var image = document.querySelector("#_image")
+        // const reader = new FileReader();
+        // reader.addEventListener("load", ()=>{
+        //     let upload_image = reader.result
+        //     console.log("in load image listener::")
+        //     console.log(upload_image)
+        // })
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function(response) {
             if (this.readyState === 4 && this.status === 200) {
