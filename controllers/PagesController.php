@@ -71,8 +71,8 @@ class PagesController
         }else {
             //$bottles = App::get('database')->selectAllData('bottles');
             //die(var_dump($bottles));
-            $bottles = App::get('database')->selectAllData('bottles');
-            
+            $bottles = App::get('database')->selectAllData('bottles', Bottle::class);
+            //die(var_dump($bottles[0]));
             return view('search', [
                 'bottles' => $bottles,
                 'queryParams' => $queryParams
@@ -117,7 +117,6 @@ class PagesController
     public function top()
     {
         $bottles = App::get('database')->selectMostValuableBottles('bottles', 'user_bottles', 'users');
-        
         $rss = "<?xml version='1.0' encoding='UTF-8'?>";
         $rss .= "<rss version='2.0'>";
         $rss .= "<channel>";
@@ -137,7 +136,6 @@ class PagesController
 
         $rss .= "</items>";
         $rss .= "</channel></rss>";
-
         return view('top', [
             'bottles' => $bottles,
             'rss' => $rss
@@ -149,7 +147,6 @@ class PagesController
         $bottle = new Bottle();
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
         //die(var_dump($userBottles));
-
         if(!is_dir("./public")){
             mkdir("./public", 0777, true);
         }
