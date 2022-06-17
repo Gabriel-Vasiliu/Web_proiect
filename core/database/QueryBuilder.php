@@ -169,7 +169,21 @@ class QueryBuilder {
     }
 
     public function updateBottle($data){
-        $sql = "UPDATE bottles SET type='{$data['type']}', image='{$data['image']}', value='{$data['value']}', country='{$data['country']}' WHERE id={$data['id']}";
+        $image = '';
+        if($data['image'] == 'undefined'){
+            $sql = "SELECT image FROM bottles WHERE id={$data['id']}";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            $image = ($statement->fetchAll(PDO::FETCH_OBJ))[0]->image;
+        } else {
+            if(isset($_FILES['image'])){
+                $extension = explode('.', $_FILES['image']['name'])[1];
+                $image = substr(sha1($_FILES['image']['name']), 0, 15) . '.' . $extension;
+                move_uploaded_file($_FILES['image']['tmp_name'], './public/' . App::$user->username . '/' . $image);
+            }
+        }
+        $sql = "UPDATE bottles SET type='{$data['type']}', image='{$image}', value='{$data['value']}', country='{$data['country']}' WHERE id={$data['id']}";
+        //die(var_dump($sql));
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
     }
