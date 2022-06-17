@@ -1,4 +1,8 @@
-<?php require 'partials/header.php'; ?>
+<?php
+
+use App\Core\App;
+
+ require 'partials/header.php'; ?>
 
 <h2> The most expensive bottle: </h2>
 
@@ -15,7 +19,7 @@
     <tbody>
         <tr>
             <td><?= $bestBottle->type ?></td>
-            <td><?= $bestBottle->image ?></td>
+            <td><img src="/public/<?= App::$user->username ?>/<?= $bestBottle->image ?>" alt="<?= $bestBottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
             <td><?= $bestBottle->value?></td>
             <td><?= $bestBottle->country ?></td>
         </tr>       

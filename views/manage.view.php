@@ -16,7 +16,7 @@ use App\Core\App;
     <input type="number" name="value" id="_value" min="0">
     <label>Country</label>
     <input type="text" name="country" id="_country">
-    <input type="submit" value="Add" name="submit" id="add-button"> 
+    <button type="button" value="Add" name="submit" id="add-button">Add </button>
 </form>
 
 <h2>My bottles:</h2>
@@ -124,7 +124,6 @@ use App\Core\App;
     console.log("newBottlesRequests")
     console.log(newBottlesRequests)
     console.log("resutt")
-    console.log(JSON.parse('<?= json_encode(App::get('database')->getBottleById(190)) ?>'))
     var data = JSON.parse('<?= json_encode($userBottles) ?>')
     console.log("users with id")
     console.log(usersWithId)
@@ -190,9 +189,12 @@ use App\Core\App;
             }
             table = table + "<tr>"
             for (let key in bottleData) {
-                table += "<td>"
+                if(key == 'image'){
+                    table = table + `<td><img src="/public/<?= App::$user->username ?>/${bottleData[key]}" alt="${bottleData[key]}" style="width: 6rem; height: 6rem;"/></td>`
+                } else {
+                    table = table + `<td> ${bottleData[key]} </td>`
+                }
                 table = table + bottleData[key]
-                table += "</td>"
             }
             table = table + "</tr>"
         }
@@ -398,10 +400,10 @@ use App\Core\App;
                 if(closeValue.localeCompare('yes')==0){
                     newInputId = dialog.querySelector(`#dialog-form .dialog-input[name=id]`).value
                     newInputType = dialog.querySelector(`#dialog-form .dialog-input[name=type]`).value
-                    newInputImage = dialog.querySelector(`#dialog-form .dialog-input[name=image]`).value
+                    newInputImage = dialog.querySelector(`#dialog-form .dialog-input[name=image]`).files[0]
                     newInputValue = dialog.querySelector(`#dialog-form .dialog-input[name=value]`).value
                     newInputCountry = dialog.querySelector(`#dialog-form .dialog-input[name=country]`).value
-                    
+                    console.log("New Input image ", newInputImage)
                     //console.log("salut, id=" + data[id]['id'])
                     const xhttp = new XMLHttpRequest();
                     xhttp.onload = function(response) {
@@ -492,8 +494,11 @@ use App\Core\App;
             console.log("#####################_lookupTable:")
             console.log(lookupTable)
             lookupTable.forEach((el) => {
-                let input = dialog.querySelector(`#dialog-form .dialog-input[name=${el}]`)
-                //input.value = elData[el]
+                //console.log("EELLL", el);
+                if(el != 'image'){
+                    let input = dialog.querySelector(`#dialog-form .dialog-input[name=${el}]`)
+                    input.value = elData[el]
+                }
             })
             
             dialog.showModal()

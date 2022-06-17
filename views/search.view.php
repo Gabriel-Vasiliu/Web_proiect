@@ -1,4 +1,8 @@
-<?php require 'partials/header.php'; ?>
+<?php
+
+use App\Core\App;
+
+ require 'partials/header.php'; ?>
 
 <h1> Search page. </h1>
 <h2>All Bottles:</h2>
@@ -27,7 +31,7 @@
             <?php foreach($bottles as $bottle): ?>
             <tr>
                 <td><?= $bottle->type ?></td>
-                <td><?= $bottle->image ?></td>
+                <td><img src="/public/<?= App::$user->username ?>/<?= $bottle->image ?>" alt="<?= $bottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
                 <td><?= $bottle->value?></td>
                 <td><?= $bottle->country ?></td>
             </tr>
@@ -74,6 +78,8 @@
                             for(let key in data[rowIndex]){
                                 if(key == 'id'){
                                     continue
+                                } else if(key == 'image'){
+                                    table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
                                 }
                                 table = table + `<td> ${data[rowIndex][key]} </td>`
                             }
