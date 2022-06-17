@@ -262,11 +262,10 @@ use App\Core\App;
                                 </div> </td>`
                                 table = table + "</tr>"
                             }
-
                             table = table + "</tbody> </table>"
-                            table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
-                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
-                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
+                            table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
+                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -275,6 +274,10 @@ use App\Core\App;
                                     deletee(ev)
                                 })
                             })
+                            if(data.length != 0){
+                                document.getElementById('send-button').addEventListener('click', sendBottles)
+                            }
+                            document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
                         }
                     }
             }
@@ -351,9 +354,9 @@ use App\Core\App;
                             }
 
                             table = table + "</tbody> </table>"
-                            table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
-                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
-                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
+                            table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
+                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -362,6 +365,10 @@ use App\Core\App;
                                     deletee(ev)
                                 })
                             })
+                            if(data.length != 0){
+                                document.getElementById('send-button').addEventListener('click', sendBottles)
+                            }
+                            document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
                         }
                     }
                 }
@@ -380,9 +387,9 @@ use App\Core\App;
                     xhttp.send(formData);
         }
     })
-
-    document.getElementById('send-button').addEventListener('click', sendBottles)
-
+    if(data.length != 0){
+        document.getElementById('send-button').addEventListener('click', sendBottles)
+    }
     document.querySelector('.update-dialog').addEventListener('close', (ev) => {
         let dialog = ev.target
                 alert('Closed. The user clicked the button with the value of ' + dialog.returnValue)
@@ -441,9 +448,9 @@ use App\Core\App;
                             }
 
                             table = table + "</tbody> </table>"
-                            table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
-                            table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
-                            table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
+                            table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
+                            table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
+                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -452,6 +459,10 @@ use App\Core\App;
                                     deletee(ev)
                                 })
                             })
+                            if(data.length != 0){
+                                document.getElementById('send-button').addEventListener('click', sendBottles)
+                            }
+                            document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
                         }
                     }
                     }
@@ -476,9 +487,13 @@ use App\Core\App;
             let rowIdFromDb = dialog.querySelector(`#dbRowId`)
             rowIdFromDb.innerHTML = "ID=" + elData['id']
             console.log(rowIdFromDb.innerHTML)
+            console.log("#####################_elData:")
+            console.log(elData)
+            console.log("#####################_lookupTable:")
+            console.log(lookupTable)
             lookupTable.forEach((el) => {
                 let input = dialog.querySelector(`#dialog-form .dialog-input[name=${el}]`)
-                input.value = elData[el]
+                //input.value = elData[el]
             })
             
             dialog.showModal()
@@ -546,10 +561,10 @@ use App\Core\App;
                     }
 
                     table = table + "</tbody> </table>"
-                    table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
-                    table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
-                    table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
-                    table = table + `<button id="show-new-request">New bottles request</button>`
+                            table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
+                            table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
+                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
                     document.querySelectorAll('.delete-button').forEach((el) => {
@@ -557,6 +572,10 @@ use App\Core\App;
                             deletee(ev)
                         })
                     })
+                    if(data.length != 0){
+                                document.getElementById('send-button').addEventListener('click', sendBottles)
+                            }
+                            document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
                 }
             } else {
                 document.getElementById("myp").innerHTML = 'No data here...';
@@ -640,10 +659,10 @@ use App\Core\App;
                     }
 
                     table = table + "</tbody> </table>"
-                    table = table + "<input type='button' value='Export to CSV' onclick='tableToCSV()'>"
-                    table = table + "<input type='button' onclick='generatePDF()' value='Export To PDF' />"
-                    table = table + `<input style="background-color:orange;" id="send-bottles" type="button" onclick="sendBottles()" value="Send Bottles" />`
-                    table = table + `<button id="show-new-request">New bottles request</button>`
+                            table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
+                            table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
+                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
                     document.querySelectorAll('.delete-button').forEach((el) => {
@@ -651,6 +670,10 @@ use App\Core\App;
                             deletee(ev1)
                         })
                     })
+                    if(data.length != 0){
+                                document.getElementById('send-button').addEventListener('click', sendBottles)
+                            }
+                            document.getElementById('show-new-request').addEventListener('click', showUsersRequestsDialog)
                 }
             } else {
                 document.getElementById("myp").innerHTML = 'No data here...';
