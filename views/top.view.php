@@ -1,4 +1,9 @@
-<?php require 'partials/header.php'; ?>
+<?php
+
+use App\Core\App;
+use App\Models\Bottle;
+
+ require 'partials/header.php'; ?>
 
 <?php if (!empty($bottles)) : ?>
     <table id="table">
@@ -15,7 +20,7 @@
             <?php foreach($bottles as $bottle): ?>
             <tr>
                 <td><?= $bottle->type ?></td>
-                <td><?= $bottle->image ?></td>
+                <td><img src="/public/<?= $bottle->user()->username ?>/<?= $bottle->image ?>" alt="<?= $bottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
                 <td><?= $bottle->value?></td>
                 <td><?= $bottle->country ?></td>
                 <td><?= $bottle->username ?></td>

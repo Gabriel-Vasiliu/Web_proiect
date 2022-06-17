@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Models;
+
+use App\Core\App;
 use App\Models\DBModel;
+use PDO;
 
 class Bottle extends DBModel{
 
@@ -37,6 +40,30 @@ class Bottle extends DBModel{
     public function attributes(): array
     {
         return ['type', 'image', 'value', 'country'];
+    }
+
+    public function user()
+    {
+        $pdo = App::get('database')->getPdo();
+        $sql="SELECT * FROM user_bottles WHERE bottle_id=:id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindParam(':id', $this->id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+ 
+        if(empty($result))
+        {
+            return new User();
+        }
+
+        $sql = "SELECT id, username FROM users WHERE id=:id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindParam(':id', $result[0]->user_id);
+        $statement->execute();
+        $user = $statement->fetchObject(User::class);
+        // die(var_dump($user));
+        
+        return $user;
     }
 
     public function labels(): array

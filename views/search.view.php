@@ -31,11 +31,10 @@ use App\Core\App;
             <?php foreach($bottles as $bottle): ?>
             <tr>
                 <td><?= $bottle->type ?></td>
-                <td><img src="/public/<?= App::$user->username ?>/<?= $bottle->image ?>" alt="<?= $bottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
+                <td><img src="/public/<?= $bottle->user()->username ?>/<?= $bottle->image ?>" alt="<?= $bottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
                 <td><?= $bottle->value?></td>
                 <td><?= $bottle->country ?></td>
             </tr>
-           
             <?php endforeach ?>
         </tbody>
     </table>
