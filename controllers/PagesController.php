@@ -144,19 +144,9 @@ class PagesController
         ]);
     }
 
-    public function manage($queryParams)
+    public function manage()
     {
         $bottle = new Bottle();
-        if(!empty($queryParams)){
-            $bottle->loadData($queryParams);
-            //die(var_dump($bottle->image));
-            if($bottle->validate() && $bottle->save()){
-                App::get('database')->insertBottleInUserBottlesTable();
-                $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
-                //App::get('session')->setFlash('success', 'Thanks for registering');
-                return json_encode($userBottles);
-            }
-        }
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
         //die(var_dump($userBottles));
 
@@ -187,7 +177,6 @@ class PagesController
             $bottle->loadData($requestBody);
             $extension = explode('.', $_FILES['image']['name'])[1];
             $bottle->image = substr(sha1($_FILES['image']['name']), 0, 15) . '.' . $extension;
-            //die(var_dump($bottle->image));
             if($bottle->validate() && $bottle->save()){
                 if(isset($_FILES['image'])){
                     move_uploaded_file($_FILES['image']['tmp_name'], './public/' . App::$user->username . '/' . $bottle->image);
@@ -223,6 +212,7 @@ class PagesController
 
     public function update(){
         $requestBody = Request::getBody();
+        //die(var_dump($requestBody));
         if(!empty($requestBody)){
             App::get('database')->updateBottle($requestBody);
             $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
