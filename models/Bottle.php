@@ -10,7 +10,7 @@ class Bottle extends DBModel{
     public int $value = 0;
     public string $country = '';
     
-    public function tableName(): string
+    public static function tableName(): string
     {
         return 'bottles';
     }

@@ -185,8 +185,13 @@ class PagesController
         $bottle = new Bottle();
         if(!empty($requestBody)){
             $bottle->loadData($requestBody);
+            $extension = explode('.', $_FILES['image']['name'])[1];
+            $bottle->image = substr(sha1($_FILES['image']['name']), 0, 15) . '.' . $extension;
             //die(var_dump($bottle->image));
             if($bottle->validate() && $bottle->save()){
+                if(isset($_FILES['image'])){
+                    move_uploaded_file($_FILES['image']['tmp_name'], './public/' . App::$user->username . '/' . $bottle->image);
+                }
                 App::get('database')->insertBottleInUserBottlesTable();
                 $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
                 //die(var_dump($userBottles));
@@ -194,6 +199,7 @@ class PagesController
                 return json_encode($userBottles);
             }
         }
+
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
         //die(var_dump($userBottles));
         return view('manage', [
@@ -245,6 +251,15 @@ class PagesController
 
     public function acceptBottles(){
         $requestBody = Request::getBody();
+        $bottlesIds = json_decode($requestBody['rows']);
+        $sendingFrom = User::findOne(['id' => $requestBody['userId']], 'users')->username;
+        foreach($bottlesIds as $bottleId){
+            $bottle = Bottle::findOne(['id' => $bottleId], 'bottles');
+            $path = $_SERVER["SCRIPT_FILENAME"];
+            $path = preg_replace("/index.php/", "", $path);
+            rename($path . "public/{$sendingFrom}/{$bottle->image}", $path.'public/' . App::$user->username . '/' . $bottle->image);
+            unlink($path . "public/{$sendingFrom}/{$bottle->image}");
+        }
         App::get('database')->acceptBottlesFromTransferBottlesTable($requestBody);
         $userBottles = App::get('database')->selectUserBottles(App::$user->username, 'bottles', 'user_bottles', 'users');
         //die(var_dump($userBottles));

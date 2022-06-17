@@ -7,7 +7,7 @@ use App\Core\App;
 <h1> Manage page </h1>
 
 <h2>Add bottle:</h2>
-<form enctype='multipart/form-data'>
+<form action="" enctype='multipart/form-data' method="POST">
     <label>Type</label>
     <input type="text" name="type" id="_type">
     <label>Image</label>
@@ -16,7 +16,7 @@ use App\Core\App;
     <input type="number" name="value" id="_value" min="0">
     <label>Country</label>
     <input type="text" name="country" id="_country">
-    <input type="button" value="Add" name="submit" id="add-button">
+    <input type="submit" value="Add" name="submit" id="add-button"> 
 </form>
 
 <h2>My bottles:</h2>
@@ -41,7 +41,7 @@ use App\Core\App;
                             <input type="text" style="display: none;">
                         </td>
                         <td><?= $bottle->type ?></td>
-                        <td><?= $bottle->image ?></td>
+                        <td><img src="/public/<?= App::$user->username ?>/<?= $bottle->image ?>" alt="<?= $bottle->image ?>" style="width: 6rem; height: 6rem;"/></td>
                         <td><?= $bottle->value ?></td>
                         <td><?= $bottle->country ?></td>
                         <td>
@@ -52,7 +52,6 @@ use App\Core\App;
                             </div>
                         </td>
                     </tr>
-
                 <?php endforeach ?>
             </tbody>
         </table>
@@ -250,7 +249,11 @@ use App\Core\App;
                                     if (key == 'id') {
                                         idRow = data[rowIndex][key];
                                     }
-                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    if(key == 'image'){
+                                        table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    } else {
+                                        table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    }
                                 }
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
@@ -333,7 +336,11 @@ use App\Core\App;
                                     if (key == 'id') {
                                         idRow = data[rowIndex][key];
                                     }
-                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    if(key == 'image'){
+                                        table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    } else {
+                                        table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    }
                                 }
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
@@ -419,7 +426,11 @@ use App\Core\App;
                                     if (key == 'id') {
                                         idRow = data[rowIndex][key];
                                     }
-                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    if(key == 'image'){
+                                        table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    } else {
+                                        table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    }
                                 }
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
@@ -492,6 +503,7 @@ use App\Core\App;
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function(response) {
             if (this.readyState === 4 && this.status === 200) {
+                console.log("DATA", this.response)
                 data = JSON.parse(this.response)
                 //document.getElementById("qp").innerHTML = this.response
                 if (data.length == 0) {
@@ -519,7 +531,11 @@ use App\Core\App;
                             if (key == 'id') {
                                 idRow = data[rowIndex][key];
                             }
-                            table = table + `<td> ${data[rowIndex][key]} </td>`
+                            if(key == 'image'){
+                                        table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    } else {
+                                        table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    }
                         }
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>
@@ -609,7 +625,11 @@ use App\Core\App;
                             if (key == 'id') {
                                 idRow = data[rowIndex][key];
                             }
-                            table = table + `<td> ${data[rowIndex][key]} </td>`
+                            if(key == 'image'){
+                                        table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    } else {
+                                        table = table + `<td> ${data[rowIndex][key]} </td>`
+                                    }
                         }
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>

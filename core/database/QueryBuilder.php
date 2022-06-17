@@ -67,6 +67,12 @@ class QueryBuilder {
             $statement = $this->pdo->prepare($sql);
             $statement->execute();
 
+            // $bottleId = $this->getBottleId()[0]->id;
+            // $newImageName = $bottleId . $bottleData->image;
+            // $sql = "UPDATE bottles SET image='{$newImageName}' WHERE id={$bottleId}";
+            // $statement = $this->pdo->prepare($sql);
+            // $statement->execute();
+
             $sql = "DELETE FROM bottles WHERE id={$bottleId}";
             $statement = $this->pdo->prepare($sql);
             $statement->execute();
@@ -168,11 +174,12 @@ class QueryBuilder {
         $statement->execute();
     }
 
-    protected function getBottleId(){
+    public function getBottleId(){
         $sql = "SELECT max(id) as id from bottles";
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_OBJ);
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+        return $result;
     }
 
     public function insertBottleInUserBottlesTable(){

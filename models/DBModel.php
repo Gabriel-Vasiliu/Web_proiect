@@ -5,7 +5,7 @@ use App\Models\Model;
 
 abstract class DBModel extends Model
 {
-    abstract public function tableName(): string;
+    abstract public static function tableName(): string;
 
     abstract public function attributes(): array;
 
@@ -20,10 +20,11 @@ abstract class DBModel extends Model
         return true;
     }
 
-    public static function findOne($where){
-        $tableName = 'users';
+    public static function findOne($where, $table = 'users'){
+        $tableName = $table;
         $attributes = array_keys($where);
         $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        
         $pdo = App::get('database')->getPdo();
         $statement = $pdo->prepare("SELECT * FROM $tableName WHERE $sql");
         foreach($where as $key => $item){
