@@ -9,7 +9,7 @@ body {
   min-height: 100%;
   width: 100%;
   background-color: #fbfafa;
-  color: #16124b;;
+  color: #16124b;
   font-family: sans-serif;
 }
 
@@ -157,23 +157,7 @@ header a{
   text-align: justify;
 }
 
-.btn{
-  background-image: linear-gradient(to top left, #00bfff, #4000ff);
-  border-radius: 10px;
-  color: black;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-left: 30px;
-}
-
-.btn:hover{
-  background-image: linear-gradient(to top left, #4000ff, #00bfff);
-}
-
-input{
+input, #show-new-request, #send-button, #add-button, .btn{
   padding: 12px 20px;
   margin-left: 30px;
   margin-bottom: 30px;
@@ -324,4 +308,33 @@ dialog {
   border-radius: 6px;
   width: 80vw;
   max-width: 500px;
+}
+
+tr:hover {
+	background-color: rgb(96, 197, 255);
+}
+
+input:hover {
+	border-color: #00284f;
+	background-color: rgb(96, 197, 255);
+}
+
+#send-button:hover {
+	border-color: #00284f;
+	background-color: rgb(96, 197, 255);
+}
+
+#show-new-request:hover {
+	border-color: #00284f;
+	background-color: rgb(96, 197, 255);
+}
+
+#add-button:hover {
+	border-color: #00284f;
+	background-color: rgb(96, 197, 255);
+}
+
+.btn:hover {
+	border-color: #00284f;
+	background-color: rgb(96, 197, 255);
 }

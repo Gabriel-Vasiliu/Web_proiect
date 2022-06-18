@@ -57,7 +57,7 @@ use App\Core\App;
         </table>
         <input type="button" value="Export to CSV" onclick="tableToCSV()">
         <input type="button" onclick="generatePDF()" value="Export To PDF" />
-        <button style="background-color:orange;" id="send-button">Send bottles</button>
+        <button id="send-button">Send bottles</button>
         <button id="show-new-request">New bottles request</button>
     <?php else: ?>
         <button id="show-new-request">New bottles request</button>
@@ -267,7 +267,7 @@ use App\Core\App;
                             table = table + "</tbody> </table>"
                             table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
                             table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
-                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -358,7 +358,7 @@ use App\Core\App;
                             table = table + "</tbody> </table>"
                             table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
                             table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
-                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -452,7 +452,7 @@ use App\Core\App;
                             table = table + "</tbody> </table>"
                             table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
                             table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
-                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                             document.getElementById("content").innerHTML = table;
                             document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -568,7 +568,7 @@ use App\Core\App;
                     table = table + "</tbody> </table>"
                             table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
                             table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
-                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
@@ -666,7 +666,7 @@ use App\Core\App;
                     table = table + "</tbody> </table>"
                             table = table + `<input type="button" value="Export to CSV" onclick="tableToCSV()">`
                             table = table + `<input type="button" onclick="generatePDF()" value="Export To PDF" />`
-                            table = table + `<button style="background-color:orange;" id="send-button">Send bottles</button>`
+                            table = table + `<button id="send-button">Send bottles</button>`
                             table = table + `<button id="show-new-request">New bottles request</button>`
                     document.getElementById("content").innerHTML = table;
                     document.querySelectorAll('.update-button').forEach(updateFunction)
