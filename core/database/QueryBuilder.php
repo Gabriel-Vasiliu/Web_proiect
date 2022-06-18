@@ -232,9 +232,8 @@ class QueryBuilder {
         }
         $sql = '';
         if(empty($optionsArr)){
-            $sql = "SELECT * FROM :table;";
+            $sql = "SELECT * FROM {$table}";
             $statement = $this->pdo->prepare($sql);
-            $statement->bindParam(':table', $table);
         } else {
             $sql = "SELECT * FROM {$table} WHERE ";
             $first=true;
@@ -246,18 +245,19 @@ class QueryBuilder {
                     $sql = $sql . ' and ' . "{$key}" . '=' . ":{$key}";
                 }
             }
+            $statement = $this->pdo->prepare($sql);
         }
-
         if(!empty($optionsArr)){
             $first=true;
             foreach($optionsArr as $key => $value){
+                //die(var_dump("{$value}"));
                 $statement->bindParam(":{$key}", $value);
+                //die(var_dump("{$value}"));
             }
         }
-
         //die(var_dump($sql));
         $statement->execute();
-        $rows = $statement->fetchAll(PDO::FETCH_OBJ);
+        $rows = $statement->fetchAll(PDO::FETCH_OBJ); 
         return $rows;
     }
     protected function existsValues($params){
