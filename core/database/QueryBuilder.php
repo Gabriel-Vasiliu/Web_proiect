@@ -186,11 +186,12 @@ class QueryBuilder {
     public function updateBottle($data){
         $image = '';
         if($data['image'] == 'undefined'){
-            $sql = "SELECT image FROM bottles WHERE id=:id}";
+            $sql = "SELECT image FROM bottles WHERE id=:id";
             $statement = $this->pdo->prepare($sql);
             $statement->bindParam(':id', $data['id']);
             $statement->execute();
             $image = ($statement->fetchAll(PDO::FETCH_OBJ))[0]->image;
+            //die(var_dump($image));
         } else {
             if(isset($_FILES['image'])){
                 $extension = explode('.', $_FILES['image']['name'])[1];
@@ -250,22 +251,24 @@ class QueryBuilder {
                     $sql = $sql . "{$key}" . '=' . ":{$key}";
                     $first = false;
                 } else {
-                    $sql = $sql . ' and ' . "{$key}" . '=' . ":{$key}";
+                    $sql = $sql . ' AND ' . "{$key}" . '=' . ":{$key}";
                 }
             }
             $statement = $this->pdo->prepare($sql);
+            // die(var_dump($statement));
         }
         if(!empty($optionsArr)){
             $first=true;
             foreach($optionsArr as $key => $value){
                 //die(var_dump("{$value}"));
-                $statement->bindParam(":{$key}", $value);
-                //die(var_dump("{$value}"));
+                $statement->bindValue(":{$key}", $value);
+            // var_dump("{$value}");
             }
         }
-        //die(var_dump($sql));
+        // die(var_dump($statement->debugDumpParams()));
         $statement->execute();
-        $rows = $statement->fetchAll(PDO::FETCH_OBJ); 
+        $rows = $statement->fetchAll(PDO::FETCH_CLASS, Bottle::class);
+        // die(var_dump($rows));
         return $rows;
     }
     protected function existsValues($params){

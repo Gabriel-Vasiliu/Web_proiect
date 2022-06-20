@@ -12,6 +12,8 @@ class Bottle extends DBModel{
     public string $image = '';
     public int $value = 0;
     public string $country = '';
+    public $user = '';
+
     
     public static function tableName(): string
     {
@@ -61,7 +63,7 @@ class Bottle extends DBModel{
         $statement->bindParam(':id', $result[0]->user_id);
         $statement->execute();
         $user = $statement->fetchObject(User::class);
-        // die(var_dump($user));
+        // die(var_dump($user)); 
         
         return $user;
     }

@@ -398,8 +398,8 @@ use App\Core\App;
     }
     document.querySelector('.update-dialog').addEventListener('close', (ev) => {
         let dialog = ev.target
-                alert('Closed. The user clicked the button with the value of ' + dialog.returnValue)
-
+                //alert('Closed. The user clicked the button with the value of ' + dialog.returnValue)
+                 
                 closeValue = dialog.returnValue
                 if(closeValue.localeCompare('yes')==0){
                     newInputId = dialog.querySelector(`#dialog-form .dialog-input[name=id]`).value

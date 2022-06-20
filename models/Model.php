@@ -10,6 +10,11 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
 
+    public function with(string $key){
+        // die(var_dump($key));
+        $this->{$key} = $this->{$key}();
+        return $this;
+    }
     public function loadData($data){
         foreach($data as $key => $value){
             if(property_exists($this, $key)){

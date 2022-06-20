@@ -65,6 +65,9 @@ class PagesController
     {
         if(!empty($queryParams)){
             $bottles = App::get('database')->selectBottlesFilteredData('bottles',$queryParams['type'],$queryParams['value'],$queryParams['country'], $queryParams);
+            array_walk($bottles, function($bottle){
+                $bottle->with('user');
+            });
             $queryParams = json_encode($queryParams);
             //die(var_dump($bottles));       
             return json_encode($bottles);

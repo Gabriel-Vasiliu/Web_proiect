@@ -63,7 +63,7 @@ use App\Core\App;
                     let first = true;
                     table = table + "<tr>"
                     for(let key in data[0]){
-                        if(key == 'id'){
+                        if(key == 'id' || key == 'errors' || key == 'user'){
                             continue
                         }
                         key = key.charAt(0).toUpperCase() + key.slice(1);
@@ -75,10 +75,10 @@ use App\Core\App;
                     for(let rowIndex in data){
                             table = table + "<tr>"
                             for(let key in data[rowIndex]){
-                                if(key == 'id'){
+                                if(key == 'id' || key == 'errors' || key == 'user'){
                                     continue
                                 } else if(key == 'image'){
-                                    table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
+                                    table = table + `<td><img src="/public/${data[rowIndex]['user']['username']}/${data[rowIndex]['image']}" alt="${data[rowIndex]['image']}" style="width: 6rem; height: 6rem;"/></td>`
                                 }
                                 else {
                                     table = table + `<td> ${data[rowIndex][key]} </td>`
