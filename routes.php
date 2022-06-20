@@ -4,7 +4,6 @@ use App\Controllers\PagesController;
 
 $router->get('', [PagesController::class, 'home']);
 $router->get('home', 'PagesController@home');
-$router->get('edit', 'PagesController@edit');
 $router->get('login', 'PagesController@login');
 $router->get('register', 'PagesController@register');
 $router->get('bottles/search', 'PagesController@search');
