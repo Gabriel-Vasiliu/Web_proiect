@@ -58,13 +58,14 @@ class QueryBuilder {
         //die(var_dump($rows));
         $idUsernameTo = App::$user->id;
         foreach($bottlesIds as $bottleId){
+            try{
             $sql = "SELECT type, image, value, country FROM bottles WHERE id=:bottleId";
             $statement = $this->pdo->prepare($sql);
             $statement->bindParam(':bottleId', $bottleId);
             $statement->execute();
             $bottleData = $statement->fetchAll(PDO::FETCH_OBJ);
             $bottleData = $bottleData[0];
-
+            
             $sql = "INSERT INTO bottles VALUES(0, :type, :image, :value, :country)";
             $statement = $this->pdo->prepare($sql);
             $statement->bindParam(':type', $bottleData->type);
@@ -72,18 +73,22 @@ class QueryBuilder {
             $statement->bindParam(':value', $bottleData->value);
             $statement->bindParam(':country', $bottleData->country);
             $statement->execute();
-
+            
             $sql = "DELETE FROM bottles WHERE id=:bottleId";
             $statement = $this->pdo->prepare($sql);
             $statement->bindParam(':bottleId', $bottleId);
             $statement->execute();
-
+            
             $lastBottleId =  $this->getBottleId();
             $sql = "INSERT INTO user_bottles VALUES(:idUsernameTo, :lastBottleId)";
             $statement = $this->pdo->prepare($sql);
-            $statement->bindParam(':bottleId', $idUsernameTo);
+            $statement->bindParam(':idUsernameTo', $idUsernameTo);
             $statement->bindParam(':lastBottleId', $lastBottleId[0]->id);
             $statement->execute();
+        }catch(\Exception $e)
+        {
+            die(var_dump($e));
+        }
         }
     }
 
@@ -102,6 +107,7 @@ class QueryBuilder {
             //die(var_dump($row->id_username_from));
             $requests[$row->id_username_from][] = $row->id_bottle;
         }
+        //die(var_dump($usernameId));
         return $requests;
     }
 
@@ -119,7 +125,8 @@ class QueryBuilder {
             $sql = "SELECT username FROM users WHERE id=:id";
 
             $statement = $this->pdo->prepare($sql);
-            $statement->bindParam(':usernameId', $id->id_username_from);
+            // die(var_dump($sql));
+            $statement->bindParam(':id', $id->id_username_from);
             $statement->execute();
 
             $username = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -165,6 +172,7 @@ class QueryBuilder {
             $statement->bindParam(':idUsernameTo', $idUsernameTo);
             $statement->bindParam(':idBottle', $idBottle);
             $statement->execute();
+            
         }
     }
 

@@ -260,7 +260,7 @@ use App\Core\App;
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                                     <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
-                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                                    <input class="check-box" type="checkbox" data-id="${rowIndex}">
                                 </div> </td>`
                                 table = table + "</tr>"
                             }
@@ -316,6 +316,8 @@ use App\Core\App;
                     xhttp.onload = function(response) {
                     if (this.readyState === 4 && this.status === 200) {
                         data = JSON.parse(this.response)
+                        console.log("<><><>");
+                        console.log(data);
                         if (data.length == 0) {
                             document.getElementById("content").innerHTML = 'No data here...';
                         } else {
@@ -350,7 +352,7 @@ use App\Core\App;
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                                     <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
-                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                                    <input class="check-box" type="checkbox" data-id="${rowIndex}">
                                 </div> </td>`
                                 table = table + "</tr>"
                             }
@@ -378,6 +380,8 @@ use App\Core\App;
                 document.querySelectorAll('.check-box').forEach((el) => {
                     if(el.checked){
                         let id = el.getAttribute('data-id');
+                        console.log("mesaj bun: ");
+                        console.log(data[id]['id']);
                         idRows.push(data[id]['id']);
                     }
                 })
@@ -444,7 +448,7 @@ use App\Core\App;
                                 table = table + `<td>                         <div class="options-update-delete">
                                     <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                                     <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
-                                    <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                                    <input class="check-box" type="checkbox" data-id="${rowIndex}">
                                 </div> </td>`
                                 table = table + "</tr>"
                             }
@@ -560,7 +564,7 @@ use App\Core\App;
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                             <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
-                            <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                            <input class="check-box" type="checkbox" data-id="${rowIndex}">
                         </div> </td>`
                         table = table + "</tr>"
                     }
@@ -658,7 +662,7 @@ use App\Core\App;
                         table = table + `<td>                         <div class="options-update-delete">
                             <button class="option-update update-button" data-id="${rowIndex}">Update</button>
                             <button class="option-delete delete-button" data-id="${rowIndex}">Delete</button>
-                            <input class="checkbox" type="checkbox" data-id="<?= $index ?>">
+                            <input class="check-box" type="checkbox" data-id="${rowIndex}">
                         </div> </td>`
                         table = table + "</tr>"
                     }
