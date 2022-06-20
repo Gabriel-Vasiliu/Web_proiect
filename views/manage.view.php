@@ -743,16 +743,20 @@ use App\Core\App;
         width: 600
     };
     var res = doc.autoTableHtmlToJson(document.getElementById("table"));
-    var columns = [res.columns[0], res.columns[1], res.columns[2], res.columns[3], res.columns[4]];
+    var columns = [res.columns[0], res.columns[1], res.columns[3], res.columns[4]];
     var y = 20;
     doc.setLineWidth(2);
     doc.text(250, y = y + 30, "Bottles");
+    for(let indexData = 0; indexData < res.data.length; indexData++){
+        //console.log(res.data[indexData][1]);
+        res.data[indexData].splice(2, 1)
+    }
     doc.autoTable(columns, res.data, {
         startY: 70,
         theme: 'grid',
         columnStyles: {
             0: {
-                cellWidth: 30,
+                cellWidth: 40,
             },
             1: {
                 cellWidth: 100,
@@ -761,9 +765,6 @@ use App\Core\App;
                 cellWidth: 100,
             },
             3: {
-                cellWidth: 50,
-            },
-            4: {
                 cellWidth: 100,
             }
         },

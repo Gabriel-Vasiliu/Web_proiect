@@ -5,6 +5,8 @@ use App\Models\Bottle;
 
  require 'partials/header.php'; ?>
 
+<h1>Top</h1>
+
 <?php if (!empty($bottles)) : ?>
     <table id="table">
         <thead>
@@ -89,11 +91,18 @@ function generate() {
         right: 40,
         width: 600
     };
+    var res = doc.autoTableHtmlToJson(document.getElementById("table"));
+    var columns = [res.columns[0], res.columns[2], res.columns[3], res.columns[4]];
     var y = 20;
+    console.log("-------------");
     doc.setLineWidth(2);
     doc.text(250, y = y + 30, "TOP");
-    doc.autoTable({
-        html: '#table',
+    for(let indexData = 0; indexData < res.data.length; indexData++){
+        //console.log(res.data[indexData][1]);
+        res.data[indexData].splice(1, 1)
+    }
+    console.log(res.data);
+    doc.autoTable(columns, res.data, {
         startY: 70,
         theme: 'grid',
         columnStyles: {
@@ -104,12 +113,9 @@ function generate() {
                 cellWidth: 100,
             },
             2: {
-                cellWidth: 50,
-            },
-            3: {
                 cellWidth: 100,
             },
-            4: {
+            3: {
                 cellWidth: 100,
             }
         },
