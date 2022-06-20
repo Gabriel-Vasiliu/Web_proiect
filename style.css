@@ -148,8 +148,8 @@ header a{
 }
 
 .descriere{
-  margin-left: 110px;
-  margin-right: 110px;
+  margin-left: 8vw;
+  margin-right: 8vw;
   margin-bottom: 50px;
   margin-top: 50px;
   font-size: 1.4em;
@@ -341,4 +341,17 @@ input:hover {
 .btn:hover {
 	border-color: #00284f;
 	background-color: rgb(96, 197, 255);
+}
+
+.cancel, .yesno {
+  background-color: #0080ff;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+.cancel:hover, .yesno:hover {
+  background-color: #00284f;
+  color: white;
 }

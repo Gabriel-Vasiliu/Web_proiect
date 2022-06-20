@@ -77,8 +77,8 @@ use App\Core\App;
         <input type="text" name="country"  class="dialog-input">    
     </form>
     <form method="dialog">
-        <button value="yes">Yes</button>
-        <button value="no">No</button>
+        <button class="yesno" value="yes">Yes</button>
+        <button class="yesno" value="no">No</button>
     </form>
 
 </dialog>
@@ -92,8 +92,8 @@ use App\Core\App;
         </form>
     </div>
     <form method="dialog">
-        <button value="yes">Yes</button>
-        <button value="no">No</button>
+        <button class="yesno" value="yes">Yes</button>
+        <button class="yesno" value="no">No</button>
     </form>
 </dialog>
 
@@ -103,7 +103,7 @@ use App\Core\App;
         <p class="username-dialog" data-id="">Username</p>
         <button class="show-bottles-dialog" data-id="">Show Bottles</button>
         <form method="dialog">
-            <button value="cancel">Cancel</button>
+            <button class="cancel" value="cancel">Cancel</button>
         </form>
     </div>
 </dialog>
@@ -144,7 +144,7 @@ use App\Core\App;
             }
         }
         dialogContent += '<form method="dialog">'
-        dialogContent += '<button value="cancel">Cancel</button>'
+        dialogContent += '<button class="cancel" value="cancel">Cancel</button>'
         dialogContent += '<form>'
         document.getElementById('show-bottles-dialog-content').innerHTML = dialogContent
         let dialog =  document.querySelector('.show-bottles-dialog') //('dialog')
@@ -206,7 +206,7 @@ use App\Core\App;
 
         form += `<button value='accept' id="accept-button" class='accept-button' data-id='${userId}'>Accept bottles</button>`
 
-        form += "<button value='cancel'>Cancel</button>"
+        form += "<button class='cancel' value='cancel'>Cancel</button>"
 
         form += '</form>'
 
