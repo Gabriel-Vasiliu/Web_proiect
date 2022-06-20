@@ -6,7 +6,7 @@ use App\Core\App;
 
 <h1> Search page. </h1>
 <h2>All Bottles:</h2>
-<form>
+<form class="form1">
     <label>Type</label>
     <input type="text" name="type" id="_type">
     <label>Value</label>
@@ -15,7 +15,7 @@ use App\Core\App;
     <input type="text" name="country" id="_country">
     <input type="button" value="Search" id="send-button">
 </form>
-<p id="qp"> QueryParams </p>
+<p id="qp"></p>
 <div id="content">
 <?php if (!empty($bottles)) : ?>
     <table>
@@ -54,7 +54,7 @@ use App\Core\App;
             if(this.readyState === 4 && this.status === 200)
             {
                 var data = JSON.parse(this.response)
-                document.getElementById("qp").innerHTML = this.response
+                //document.getElementById("qp").innerHTML = this.response
                 if(data.length == 0){
                     document.getElementById("content").innerHTML = 'No data here...';
                 } else {
@@ -80,7 +80,9 @@ use App\Core\App;
                                 } else if(key == 'image'){
                                     table = table + `<td><img src="/public/<?= App::$user->username ?>/${data[rowIndex][key]}" alt="${data[rowIndex][key]}" style="width: 6rem; height: 6rem;"/></td>`
                                 }
-                                table = table + `<td> ${data[rowIndex][key]} </td>`
+                                else {
+                                    table = table + `<td> ${data[rowIndex][key]} </td>`
+                                }
                             }
                             table = table + "</tr>"
                     }

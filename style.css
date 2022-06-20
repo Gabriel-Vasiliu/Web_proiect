@@ -148,8 +148,8 @@ header a{
 }
 
 .descriere{
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 110px;
+  margin-right: 110px;
   margin-bottom: 50px;
   margin-top: 50px;
   font-size: 1.4em;
@@ -165,6 +165,10 @@ input, #show-new-request, #send-button, #add-button, .btn{
   border: 1px solid #0080ff;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.form1 input {
+  display: block;
 }
 
 label{

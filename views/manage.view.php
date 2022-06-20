@@ -7,7 +7,7 @@ use App\Core\App;
 <h1> Manage page </h1>
 
 <h2>Add bottle:</h2>
-<form action="" enctype='multipart/form-data' method="POST">
+<form action="" enctype='multipart/form-data' method="POST" class="form1">
     <label>Type</label>
     <input type="text" name="type" id="_type">
     <label>Image</label>
