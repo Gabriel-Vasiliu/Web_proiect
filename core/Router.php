@@ -42,6 +42,8 @@ class Router
                 $data[2] = Request::queryParams();
                 return $this->callAction($data);
             }
+         }else {
+            return view("404");
         }
         // die(var_dump($uri));
         // die(var_dump($this->routes[$requestType]));
