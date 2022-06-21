@@ -1,11 +1,41 @@
 <?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel><title>Collecting Bottles</title><description>Collecting Bottles - Top 10</description><language>en-us</language><items><item>
-            <type>Damigeana</type>
-            <value>300</value>
-            <country>Germania</country>
-            <username>Claudiu</username>
+            <type>sticla</type>
+            <value>4000</value>
+            <country>Grecia</country>
+            <username>user</username>
             </item><item>
-            <type>Damigeana</type>
-            <value>100</value>
+            <type>butelca</type>
+            <value>1200</value>
+            <country>Romania</country>
+            <username>gabi</username>
+            </item><item>
+            <type>bidon</type>
+            <value>1000</value>
             <country>Franta</country>
-            <username>Daniel</username>
+            <username>admin</username>
+            </item><item>
+            <type>sticla</type>
+            <value>790</value>
+            <country>Canada</country>
+            <username>admin</username>
+            </item><item>
+            <type>damigeana</type>
+            <value>560</value>
+            <country>Elvetia</country>
+            <username>user</username>
+            </item><item>
+            <type>butelca</type>
+            <value>500</value>
+            <country>Romania</country>
+            <username>admin</username>
+            </item><item>
+            <type>sticla</type>
+            <value>120</value>
+            <country>Statele Unite</country>
+            <username>gabi</username>
+            </item><item>
+            <type>sticla</type>
+            <value>40</value>
+            <country>Romania</country>
+            <username>admin</username>
             </item></items></channel></rss>
